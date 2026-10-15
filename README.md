@@ -12,15 +12,11 @@ npx benchmark-cost-per-task run --provider mock
 
 ```text
 # Cost Per Task
-- Model: mock:1
-- Score: 53.3%
+
+- Model: `mock:1`
+- Score: **53.3%**
 - 95% CI: 36.7%–70.0%
 - Tasks: 30
-
-## Efficiency
-- Verified successes: 16/30
-- Cost per verified success: $0.000000
-- Mean turns: 1.00
 ```
 
 The 30 public episodes come from a committed seeded generator. A dated OpenRouter model-price snapshot supports offline cost estimates.
