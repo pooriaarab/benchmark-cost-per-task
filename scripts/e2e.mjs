@@ -14,11 +14,33 @@ const report = JSON.parse(cli.stdout);
 assert.equal(report.rows.length, 30);
 assert.ok(report.rows.some((row) => row.score === 1));
 assert.ok(report.rows.some((row) => row.score === 0));
+assert.ok(report.rows.every((row) => row.error === undefined));
+
 const { benchmark } = await import("../dist/index.js");
-for (const task of await benchmark.listTasks()) {
-  const finishOnly = { toolLog: [{ name: "finish_task", args: {}, result: { finished: true } }] };
-  assert.equal((await benchmark.score(task, finishOnly)).score, 0);
+const tasks = await benchmark.listTasks();
+const goodScores = [];
+const badPolicies = {
+  empty: {}, random: { answer: "zebra-493" }, yes: { answer: "yes" },
+  forged: (task) => ({ finalState: task.expected }),
+  sameCall: { toolLog: [{ name: "finish_task", args: {}, result: { finished: true } }] },
+};
+for (const task of tasks) {
+  const calls = benchmark.definition.mockPolicies.good(task)[0].toolCalls;
+  goodScores.push((await benchmark.score(task, { toolLog: calls.map((call) => ({ ...call, result: null })) })).score);
 }
+assert.ok(goodScores.every((score) => score === 1));
+for (const [name, candidate] of Object.entries(badPolicies)) {
+  const scores = await Promise.all(tasks.map((task) => benchmark.score(task, typeof candidate === "function" ? candidate(task) : candidate)));
+  assert.ok(scores.reduce((sum, item) => sum + item.score, 0) / scores.length <= 0.1, `${name} policy scored too high`);
+}
+
+await mkdir("artifacts", { recursive: true });
+await writeFile("artifacts/mock-report.json", `${JSON.stringify(report)}\n`);
+for (const args of [
+  ["list", "--json"], ["show", "invoice-total-01", "--json"],
+  ["score", "artifacts/mock-report.json", "--json"], ["card", "artifacts/mock-report.json", "artifacts/card.svg"],
+  ["provenance", "--json"], ["index-entry", "--json"],
+]) await execFile(process.execPath, ["dist/cli.js", ...args], { maxBuffer: 1_000_000 });
 
 const probe = createNetServer();
 await new Promise((resolve) => probe.listen(0, "127.0.0.1", resolve));
@@ -59,7 +81,6 @@ try {
 } finally { await client.close(); }
 
 const artifact = { task_count: report.rows.length, scores: report.rows.map((row) => row.score), route_status_codes: routes, tool_names: toolNames };
-await mkdir("artifacts", { recursive: true });
 await writeFile("artifacts/e2e-report.json", `${JSON.stringify(artifact, null, 2)}\n`);
 assert.match(await readFile("data/PROVENANCE.md", "utf8"), /Seeded back-office episodes/);
 console.log(`e2e: ${artifact.task_count} tasks, ${Object.keys(routes).length} routes, ${toolNames.length} tools -> all surfaces passed, ok`);
