@@ -10,7 +10,10 @@ const execFile = promisify(execFileCallback);
 
 await execFile("npm", ["run", "build"]);
 const cli = await execFile(process.execPath, ["dist/cli.js", "run", "--model", "offline", "--provider", "mock", "--json"], { maxBuffer: 1_000_000 });
-await execFile(process.execPath, ["dist/cli.js", "run", "--provider", "mock"], { maxBuffer: 1_000_000 });
+const readable = await execFile(process.execPath, ["dist/cli.js", "run", "--provider", "mock"], { maxBuffer: 1_000_000 });
+assert.match(readable.stdout, /Score: \*\*53\.3%\*\*/);
+assert.match(readable.stdout, /Verified successes \| 16\/30/);
+assert.match(readable.stdout, /Cost per verified success \| \$0\.000000/);
 const report = JSON.parse(cli.stdout);
 assert.equal(report.rows.length, 30);
 assert.ok(report.rows.some((row) => row.score === 1));
