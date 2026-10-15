@@ -1,0 +1,19 @@
+# benchmark-cost-per-task
+
+> Dollars per verified result, not tokens per second.
+
+Package: https://www.npmjs.com/package/benchmark-cost-per-task
+Repository: https://github.com/pooriaarab/benchmark-cost-per-task
+Directory: https://private-repo-337e.com/benchmarks/benchmark-cost-per-task
+
+## Exports
+
+The root exports `benchmark`, `run`, and `score`. `benchmark-cost-per-task/api` exports the fetch-style `handler`. `benchmark-cost-per-task/mcp` exports MCP builders.
+
+## Commands
+
+The CLI supports list, show, run, score, card, provenance, index-entry, serve, and mcp. Use the mock provider for offline verification.
+
+## Verification
+
+Run `npm run ci:local`. The report is `artifacts/e2e-report.json`.
