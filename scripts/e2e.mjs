@@ -11,9 +11,14 @@ const execFile = promisify(execFileCallback);
 await execFile("npm", ["run", "build"]);
 const cli = await execFile(process.execPath, ["dist/cli.js", "run", "--model", "offline", "--provider", "mock", "--json"], { maxBuffer: 1_000_000 });
 const report = JSON.parse(cli.stdout);
-assert.equal(report.rows.length, 2);
+assert.equal(report.rows.length, 30);
 assert.ok(report.rows.some((row) => row.score === 1));
 assert.ok(report.rows.some((row) => row.score === 0));
+const { benchmark } = await import("../dist/index.js");
+for (const task of await benchmark.listTasks()) {
+  const finishOnly = { toolLog: [{ name: "finish_task", args: {}, result: { finished: true } }] };
+  assert.equal((await benchmark.score(task, finishOnly)).score, 0);
+}
 
 const probe = createNetServer();
 await new Promise((resolve) => probe.listen(0, "127.0.0.1", resolve));
@@ -28,12 +33,12 @@ async function get(path) {
 try {
   for (let attempt = 0; attempt < 100; attempt++) { try { await get("/health"); break; } catch { await new Promise((resolve) => setTimeout(resolve, 20)); } }
   const health = await get("/health"); assert.equal(health.response.status, 200);
-  const listed = await get("/v1/tasks"); assert.equal(listed.value.tasks.length, 2);
-  const shown = await get("/v1/tasks/starter-1"); assert.equal(shown.value.task.id, "starter-1");
-  const score = await fetch(`${base}/v1/score`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ taskId: "starter-1", submission: report.rows[0].submission }) });
+  const listed = await get("/v1/tasks"); assert.equal(listed.value.tasks.length, 30);
+  const shown = await get("/v1/tasks/invoice-total-01"); assert.equal(shown.value.task.id, "invoice-total-01");
+  const score = await fetch(`${base}/v1/score`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ taskId: "invoice-total-01", submission: report.rows[0].submission }) });
   routes["POST /v1/score"] = score.status; assert.equal(score.status, 200);
   assert.equal((await get("/v1/provenance")).response.status, 200);
-  assert.equal((await get("/v1/index-entry")).value.task_count, 2);
+  assert.equal((await get("/v1/index-entry")).value.task_count, 30);
 } finally { if (server.exitCode === null) { server.kill("SIGTERM"); await once(server, "exit"); } }
 
 const transport = new StdioClientTransport({ command: process.execPath, args: ["dist/cli.js", "mcp"], cwd: process.cwd(), stderr: "pipe" });
@@ -43,8 +48,8 @@ try {
   const available = await client.listTools(); toolNames = available.tools.map((tool) => tool.name).sort();
   assert.deepEqual(toolNames, ["get_provenance", "get_task", "list_tasks", "run_benchmark", "score_answer"]);
   const calls = [
-    ["list_tasks", {}], ["get_task", { taskId: "starter-1" }],
-    ["score_answer", { taskId: "starter-1", submission: report.rows[0].submission }],
+    ["list_tasks", {}], ["get_task", { taskId: "invoice-total-01" }],
+    ["score_answer", { taskId: "invoice-total-01", submission: report.rows[0].submission }],
     ["get_provenance", {}], ["run_benchmark", { model: "offline" }],
   ];
   for (const [name, args] of calls) {
@@ -56,5 +61,5 @@ try {
 const artifact = { task_count: report.rows.length, scores: report.rows.map((row) => row.score), route_status_codes: routes, tool_names: toolNames };
 await mkdir("artifacts", { recursive: true });
 await writeFile("artifacts/e2e-report.json", `${JSON.stringify(artifact, null, 2)}\n`);
-assert.match(await readFile("data/PROVENANCE.md", "utf8"), /Seeded starter task generator/);
+assert.match(await readFile("data/PROVENANCE.md", "utf8"), /Seeded back-office episodes/);
 console.log(`e2e: ${artifact.task_count} tasks, ${Object.keys(routes).length} routes, ${toolNames.length} tools -> all surfaces passed, ok`);
