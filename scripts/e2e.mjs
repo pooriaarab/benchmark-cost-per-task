@@ -14,6 +14,11 @@ const report = JSON.parse(cli.stdout);
 assert.equal(report.rows.length, 30);
 assert.ok(report.rows.some((row) => row.score === 1));
 assert.ok(report.rows.some((row) => row.score === 0));
+const { benchmark } = await import("../dist/index.js");
+for (const task of await benchmark.listTasks()) {
+  const finishOnly = { toolLog: [{ name: "finish_task", args: {}, result: { finished: true } }] };
+  assert.equal((await benchmark.score(task, finishOnly)).score, 0);
+}
 
 const probe = createNetServer();
 await new Promise((resolve) => probe.listen(0, "127.0.0.1", resolve));
