@@ -9,5 +9,5 @@ const models = body.data.map((model) => ({
   completionUsdPerToken: Number(model.pricing?.completion),
 })).filter((model) => Number.isFinite(model.promptUsdPerToken) && Number.isFinite(model.completionUsdPerToken)).sort((a, b) => a.id.localeCompare(b.id));
 const snapshot = { source: "https://openrouter.ai/api/v1/models", retrievedAt: new Date().toISOString(), models };
-await writeFile("data/prices.json", `${JSON.stringify(snapshot, null, 2)}\n`);
+await writeFile("data/prices.json", `${JSON.stringify(snapshot)}\n`);
 console.log(`saved ${models.length} model prices to data/prices.json`);
