@@ -15,8 +15,10 @@ assert.equal(report.rows.length, 30);
 assert.ok(report.rows.some((row) => row.score === 1));
 assert.ok(report.rows.some((row) => row.score === 0));
 assert.ok(report.rows.every((row) => row.error === undefined));
+assert.equal(report.efficiency.costPerVerifiedSuccess, 0);
+assert.equal(report.efficiency.costSource, "provider");
 
-const { benchmark } = await import("../dist/index.js");
+const { benchmark, addEfficiency } = await import("../dist/index.js");
 const tasks = await benchmark.listTasks();
 const goodScores = [];
 const badPolicies = {
@@ -38,9 +40,22 @@ for (const [name, candidate] of Object.entries(badPolicies)) {
   const scores = await Promise.all(tasks.map((task) => benchmark.score(task, typeof candidate === "function" ? candidate(task) : candidate)));
   assert.ok(scores.reduce((sum, item) => sum + item.score, 0) / scores.length <= 0.1, `${name} policy scored too high`);
 }
+const unavailable = await addEfficiency({ ...report, model: "unknown:model", rows: report.rows.map((row) => ({ ...row, usage: { inputTokens: 1, outputTokens: 1 } })) });
+assert.equal(unavailable.efficiency.costPerVerifiedSuccess, null);
+const noSuccess = await addEfficiency({ ...report, rows: report.rows.map((row) => ({ ...row, score: 0 })) });
+assert.equal(noSuccess.efficiency.costPerVerifiedSuccess, null);
 
 await mkdir("artifacts", { recursive: true });
 await writeFile("artifacts/mock-report.json", `${JSON.stringify(report)}\n`);
+const second = await execFile(process.execPath, ["dist/cli.js", "run", "--model", "offline", "--provider", "mock", "--seed", "2", "--json"], { maxBuffer: 1_000_000 });
+await writeFile("artifacts/mock-report-2.json", second.stdout);
+const compared = await execFile(process.execPath, ["dist/cli.js", "compare", "artifacts/mock-report.json", "artifacts/mock-report-2.json", "--json"]);
+assert.equal(JSON.parse(compared.stdout).rows.length, 2);
+await writeFile("artifacts/empty-report.json", `${JSON.stringify({ ...report, rows: [] })}\n`);
+await assert.rejects(execFile(process.execPath, ["dist/cli.js", "compare", "artifacts/mock-report.json", "artifacts/empty-report.json"]), /Invalid report/);
+const malformed = { ...report, rows: report.rows.map((row, index) => index === 0 ? { ...row, usage: { ...row.usage, costUsd: "abc" } } : row) };
+await writeFile("artifacts/malformed-report.json", `${JSON.stringify(malformed)}\n`);
+await assert.rejects(execFile(process.execPath, ["dist/cli.js", "compare", "artifacts/mock-report.json", "artifacts/malformed-report.json"]), /Invalid report/);
 for (const args of [
   ["list", "--json"], ["show", "invoice-total-01", "--json"],
   ["score", "artifacts/mock-report.json", "--json"], ["card", "artifacts/mock-report.json", "artifacts/card.svg"],
