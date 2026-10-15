@@ -51,6 +51,8 @@ const second = await execFile(process.execPath, ["dist/cli.js", "run", "--model"
 await writeFile("artifacts/mock-report-2.json", second.stdout);
 const compared = await execFile(process.execPath, ["dist/cli.js", "compare", "artifacts/mock-report.json", "artifacts/mock-report-2.json", "--json"]);
 assert.equal(JSON.parse(compared.stdout).rows.length, 2);
+await writeFile("artifacts/empty-report.json", `${JSON.stringify({ ...report, rows: [] })}\n`);
+await assert.rejects(execFile(process.execPath, ["dist/cli.js", "compare", "artifacts/mock-report.json", "artifacts/empty-report.json"]), /Invalid report/);
 for (const args of [
   ["list", "--json"], ["show", "invoice-total-01", "--json"],
   ["score", "artifacts/mock-report.json", "--json"], ["card", "artifacts/mock-report.json", "artifacts/card.svg"],
