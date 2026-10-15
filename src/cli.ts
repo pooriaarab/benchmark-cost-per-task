@@ -40,6 +40,7 @@ async function main(argv: string[]): Promise<number> {
     } catch (error) { console.error(error instanceof Error ? error.message : String(error)); return 1; }
   }
   if (argv[0] !== "run") return core.main(argv);
+  if (argv.includes("--provider") && argv[argv.indexOf("--provider") + 1] === "mock" && !argv.includes("--model")) argv = [...argv, "--model", "offline"];
   const json = argv.includes("--json"); let output = "";
   const original = console.log;
   console.log = (...values: unknown[]) => { output += `${values.join(" ")}\n`; };
