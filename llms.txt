@@ -1,19 +1,29 @@
 # benchmark-cost-per-task
 
-> Dollars per verified result, not tokens per second.
+> AI agent benchmark for cost per deterministically verified back-office result.
 
 Package: https://www.npmjs.com/package/benchmark-cost-per-task
 Repository: https://github.com/pooriaarab/benchmark-cost-per-task
 Directory: https://aibenchmarkindex.com/benchmarks/benchmark-cost-per-task
 
+## Data and grading
+
+The package contains 30 seeded synthetic episodes: 10 invoice calculations, 10 CRM updates, and 10 file edits. The grader replays tool calls against a fresh virtual workspace and requires an exact final state plus finish_task.
+
+Provider cost is authoritative. Missing cost is estimated from token counts and the live or committed OpenRouter price catalogue. Unknown costs remain null.
+
 ## Exports
 
-The root exports `benchmark`, `run`, and `score`. `benchmark-cost-per-task/api` exports the fetch-style `handler`. `benchmark-cost-per-task/mcp` exports MCP builders.
+The root exports benchmark, run, score, addEfficiency, compareReports, renderEfficiency, and renderComparison. benchmark-cost-per-task/api exports the fetch-style handler. benchmark-cost-per-task/mcp exports MCP builders.
 
 ## Commands
 
-The CLI supports list, show, run, score, card, provenance, index-entry, serve, and mcp. Use the mock provider for offline verification.
+The CLI supports list, show, run, score, compare, card, provenance, index-entry, serve, and mcp. Use `run --provider mock` for offline verification.
+
+## Environment
+
+OpenRouter reads OPENROUTER_API_KEY. OpenAI-compatible providers read OPENAI_BASE_URL and OPENAI_API_KEY. Repository files never supply provider keys.
 
 ## Verification
 
-Run `npm run ci:local`. The report is `artifacts/e2e-report.json`.
+Run `npm run ci:local`. The E2E report is `artifacts/e2e-report.json`.
