@@ -13,7 +13,7 @@ async function main(argv: string[]): Promise<number> {
     try {
       const reports = await Promise.all(files.map(async (file) => {
         const value = JSON.parse(await readFile(file, "utf8")) as RunReport | CostReport;
-        if (!value || !Array.isArray(value.rows) || typeof value.model !== "string") throw new Error(`Invalid report: ${file}`);
+        if (!value || !Array.isArray(value.rows) || value.rows.length === 0 || typeof value.model !== "string") throw new Error(`Invalid report: ${file}`);
         return "efficiency" in value ? value : addEfficiency(value);
       }));
       const comparison = compareReports(reports);
