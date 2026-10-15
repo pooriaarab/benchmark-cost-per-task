@@ -1,8 +1,8 @@
 {
   "name": "benchmark-cost-per-task",
   "version": "0.1.0",
-  "description": "Dollars per verified result, not tokens per second.",
-  "keywords": ["ai-benchmark", "llm-evaluation", "model-evaluation", "evals", "grading", "openrouter", "openai", "mcp", "typescript", "agent-benchmark"],
+  "description": "AI agent benchmark for cost per verified back-office task with deterministic grading, OpenRouter pricing, CLI, SDK, API, and MCP.",
+  "keywords": ["ai-benchmark", "agent-benchmark", "agent-evaluation", "llm-evaluation", "model-evaluation", "cost-per-task", "llm-cost", "evals", "grading", "openrouter", "openai", "mcp", "typescript"],
   "homepage": "https://private-repo-337e.com/benchmarks/benchmark-cost-per-task",
   "bugs": "https://github.com/pooriaarab/benchmark-cost-per-task/issues",
   "repository": { "type": "git", "url": "git+https://github.com/pooriaarab/benchmark-cost-per-task.git" },
@@ -14,7 +14,7 @@
     "./api": { "types": "./dist/api.d.ts", "import": "./dist/api.js" }
   },
   "bin": { "benchmark-cost-per-task": "./dist/cli.js" },
-  "files": ["dist", "data", "README.md", "AGENTS.md", "llms.txt", "server.json", "LICENSE"],
+  "files": ["dist", "data", "docs", "README.md", "AGENTS.md", "llms.txt", "server.json", "LICENSE"],
   "engines": { "node": ">=20" }, "sideEffects": false,
   "scripts": {
     "lint": "oxlint src scripts", "typecheck": "tsc --noEmit", "build": "tsup",
