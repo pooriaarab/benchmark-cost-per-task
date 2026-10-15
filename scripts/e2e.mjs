@@ -23,6 +23,11 @@ const badPolicies = {
   empty: {}, random: { answer: "zebra-493" }, yes: { answer: "yes" },
   forged: (task) => ({ finalState: task.expected }),
   sameCall: { toolLog: [{ name: "finish_task", args: {}, result: { finished: true } }] },
+  reserved: (task) => ({ toolLog: [
+    { name: "write_file", args: { path: "__proto__", content: "x" }, result: null },
+    { name: "update_record", args: { id: task.input.records[0]?.id ?? "missing", fields: { constructor: 1 } }, result: null },
+    { name: "finish_task", args: {}, result: { finished: true } },
+  ] }),
 };
 for (const task of tasks) {
   const calls = benchmark.definition.mockPolicies.good(task)[0].toolCalls;

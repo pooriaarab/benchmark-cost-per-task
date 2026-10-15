@@ -68,11 +68,13 @@ function goodCalls(task: CostTask) {
   const changedFile = Object.keys(task.expected.files).find((path) => task.input.files[path] !== task.expected.files[path]);
   if (changedFile) {
     if (task.input.files[changedFile] !== undefined) calls.push({ name: "read_file", args: { path: changedFile } });
-    else calls.push({ name: "read_file", args: { path: "invoices.csv" } });
+    else calls.push({ name: "read_file", args: { path: Object.keys(task.input.files)[0] ?? changedFile } });
     calls.push({ name: "write_file", args: { path: changedFile, content: task.expected.files[changedFile]! } });
   } else {
     const changed = task.expected.records.find((record, index) => canonical(record) !== canonical(task.input.records[index] ?? null));
-    calls.push({ name: "list_records", args: {} }, { name: "update_record", args: { id: changed?.id ?? "missing", fields: { nextAction: "renewal-review" } } });
+    const original = task.input.records.find((record) => record.id === changed?.id);
+    const fields = Object.fromEntries(Object.entries(changed ?? {}).filter(([key, value]) => key !== "id" && canonical(value) !== canonical(original?.[key] ?? null)));
+    calls.push({ name: "list_records", args: {} }, { name: "update_record", args: { id: changed?.id ?? "missing", fields } });
   }
   calls.push({ name: "finish_task", args: {} }); return calls;
 }
