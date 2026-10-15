@@ -7,6 +7,7 @@ interface CostTask extends Task { input: Workspace; expected: Workspace }
 
 const clone = <T>(value: T): T => JSON.parse(JSON.stringify(value)) as T;
 const object = (value: JsonValue | undefined): value is Record<string, JsonValue> => value !== null && typeof value === "object" && !Array.isArray(value);
+const unsafeKey = (value: string) => ["__proto__", "constructor", "prototype"].includes(value);
 const canonical = (value: JsonValue): string => JSON.stringify(value, (_key, item) => item && typeof item === "object" && !Array.isArray(item) ? Object.fromEntries(Object.entries(item).sort(([a], [b]) => a.localeCompare(b))) : item);
 
 async function loadTasks(): Promise<CostTask[]> {
@@ -36,16 +37,19 @@ class BackOfficeEnvironment implements Environment<CostTask> {
     if (this.#finished) return { result: null, error: { code: "ALREADY_FINISHED", message: "The task is already finished." } };
     if (name === "read_file") {
       if (typeof args.path !== "string") return this.#invalid("read_file requires a string path.");
+      if (unsafeKey(args.path)) return this.#invalid("The file path is reserved.");
       const content = this.#workspace.files[args.path];
       return content === undefined ? { result: null, error: { code: "NOT_FOUND", message: `File not found: ${args.path}` } } : { result: { path: args.path, content } };
     }
     if (name === "write_file") {
       if (typeof args.path !== "string" || typeof args.content !== "string") return this.#invalid("write_file requires string path and content.");
+      if (unsafeKey(args.path)) return this.#invalid("The file path is reserved.");
       this.#workspace.files[args.path] = args.content; return { result: { written: args.path } };
     }
     if (name === "list_records") return { result: clone(this.#workspace.records) };
     if (name === "update_record") {
       if (typeof args.id !== "string" || !object(args.fields)) return this.#invalid("update_record requires a string id and object fields.");
+      if (Object.keys(args.fields).some(unsafeKey)) return this.#invalid("The update contains a reserved field.");
       const record = this.#workspace.records.find((item) => item.id === args.id);
       if (!record) return { result: null, error: { code: "NOT_FOUND", message: `CRM record not found: ${args.id}` } };
       Object.assign(record, clone(args.fields)); return { result: clone(record) };
@@ -64,11 +68,13 @@ function goodCalls(task: CostTask) {
   const changedFile = Object.keys(task.expected.files).find((path) => task.input.files[path] !== task.expected.files[path]);
   if (changedFile) {
     if (task.input.files[changedFile] !== undefined) calls.push({ name: "read_file", args: { path: changedFile } });
-    else calls.push({ name: "read_file", args: { path: "invoices.csv" } });
+    else calls.push({ name: "read_file", args: { path: Object.keys(task.input.files)[0] ?? changedFile } });
     calls.push({ name: "write_file", args: { path: changedFile, content: task.expected.files[changedFile]! } });
   } else {
     const changed = task.expected.records.find((record, index) => canonical(record) !== canonical(task.input.records[index] ?? null));
-    calls.push({ name: "list_records", args: {} }, { name: "update_record", args: { id: changed?.id ?? "missing", fields: { nextAction: "renewal-review" } } });
+    const original = task.input.records.find((record) => record.id === changed?.id);
+    const fields = Object.fromEntries(Object.entries(changed ?? {}).filter(([key, value]) => key !== "id" && canonical(value) !== canonical(original?.[key] ?? null)));
+    calls.push({ name: "list_records", args: {} }, { name: "update_record", args: { id: changed?.id ?? "missing", fields } });
   }
   calls.push({ name: "finish_task", args: {} }); return calls;
 }
