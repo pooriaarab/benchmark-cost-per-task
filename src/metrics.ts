@@ -73,5 +73,6 @@ export function renderEfficiency(report: CostReport): string {
 }
 
 export function renderComparison(comparison: ReturnType<typeof compareReports>): string {
-  return ["| Model | Success | Cost / verified success | Pareto |", "| --- | ---: | ---: | :---: |", ...comparison.rows.map((row) => `| ${row.model} | ${(row.successRate * 100).toFixed(1)}% | ${money(row.costPerVerifiedSuccess)} | ${row.pareto ? "yes" : "no"} |`)].join("\n");
+  const cell = (value: string) => [...value].filter((character) => { const code = character.charCodeAt(0); return code > 31 && (code < 127 || code > 159); }).join("").replaceAll("|", "\\|");
+  return ["| Model | Success | Cost / verified success | Pareto |", "| --- | ---: | ---: | :---: |", ...comparison.rows.map((row) => `| ${cell(row.model)} | ${(row.successRate * 100).toFixed(1)}% | ${money(row.costPerVerifiedSuccess)} | ${row.pareto ? "yes" : "no"} |`)].join("\n");
 }

@@ -5,6 +5,25 @@ import { benchmark } from "./benchmark.js";
 import { addEfficiency, compareReports, renderComparison, renderEfficiency, type CostReport } from "./metrics.js";
 
 const core = createCli(benchmark, { bin: "benchmark-cost-per-task" });
+const record = (value: unknown): value is Record<string, unknown> => value !== null && typeof value === "object" && !Array.isArray(value);
+const finite = (value: unknown): value is number => typeof value === "number" && Number.isFinite(value);
+
+function validReport(value: unknown): value is RunReport | CostReport {
+  if (!record(value) || typeof value.model !== "string" || !Array.isArray(value.rows) || value.rows.length === 0) return false;
+  for (const row of value.rows) {
+    if (!record(row) || !finite(row.score) || row.score < 0 || row.score > 1 || !finite(row.attempts) || !Number.isInteger(row.attempts) || row.attempts < 1) return false;
+    if (row.usage !== undefined) {
+      if (!record(row.usage)) return false;
+      const usage = row.usage;
+      if (["inputTokens", "outputTokens", "totalTokens", "costUsd"].some((key) => usage[key] !== undefined && (!finite(usage[key]) || (usage[key] as number) < 0))) return false;
+    }
+    if (row.episode !== undefined && (!record(row.episode) || !finite(row.episode.turns) || !Number.isInteger(row.episode.turns) || row.episode.turns < 0)) return false;
+  }
+  if (value.efficiency !== undefined) {
+    if (!record(value.efficiency) || !finite(value.efficiency.successRate) || value.efficiency.successRate < 0 || value.efficiency.successRate > 1 || (value.efficiency.costPerVerifiedSuccess !== null && (!finite(value.efficiency.costPerVerifiedSuccess) || (value.efficiency.costPerVerifiedSuccess as number) < 0))) return false;
+  }
+  return true;
+}
 
 async function main(argv: string[]): Promise<number> {
   if (argv[0] === "compare") {
@@ -12,8 +31,8 @@ async function main(argv: string[]): Promise<number> {
     const files = argv.slice(1).filter((arg) => arg !== "--json");
     try {
       const reports = await Promise.all(files.map(async (file) => {
-        const value = JSON.parse(await readFile(file, "utf8")) as RunReport | CostReport;
-        if (!value || !Array.isArray(value.rows) || value.rows.length === 0 || typeof value.model !== "string") throw new Error(`Invalid report: ${file}`);
+        const value: unknown = JSON.parse(await readFile(file, "utf8"));
+        if (!validReport(value)) throw new Error(`Invalid report: ${file}`);
         return "efficiency" in value ? value : addEfficiency(value);
       }));
       const comparison = compareReports(reports);
