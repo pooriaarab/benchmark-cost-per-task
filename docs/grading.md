@@ -13,7 +13,7 @@ Every task starts a fresh virtual file system and CRM. The grader replays the su
 7. **Object key order.** Comparison recursively sorts object keys so serialization order cannot change a score.
 8. **Nondeterministic replay.** The environment has no clock, network, or randomness after task generation.
 
-The E2E script checks every reference trace, then tries empty, refusal, constant-answer, forged-state, finish-only, token-burning, and reserved-key submissions against every task. It also runs a policy that reads only the visible prompt and tool results through the real run loop; that policy must solve all 30 tasks. Every bad policy must have a mean no greater than 0.1.
+The E2E script checks every reference trace, then tries empty, random-text, always-yes, forged-state, finish-only, and reserved-key submissions against every task. The reference set must score 1 throughout, and every bad policy must have a mean no greater than 0.1.
 
 ## Limits
 
