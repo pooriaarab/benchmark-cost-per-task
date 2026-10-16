@@ -14,7 +14,7 @@
 
 Keep all 30 tasks, deterministic grading, and provenance in sync. Grade traces by replaying their tool log. Never trust submitted final state or tool results.
 
-Provider-reported cost wins. Estimate only from recorded token usage and a matching live or snapshot model price. Keep unavailable cost as null.
+Provider-reported cost wins only when it is a positive dollar amount; a reported zero is re-estimated. Estimate only from recorded token usage and a matching live or snapshot model price. Keep unavailable cost as null. Errored rows with no usage count as a known spend of zero.
 
 Never read provider keys from repository files. OpenRouter uses `OPENROUTER_API_KEY`. OpenAI-compatible providers use `OPENAI_BASE_URL` and `OPENAI_API_KEY`.
 
