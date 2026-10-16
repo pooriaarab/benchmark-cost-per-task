@@ -1,6 +1,6 @@
 {
   "name": "benchmark-cost-per-task",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "AI agent benchmark for cost per verified back-office task with deterministic grading, OpenRouter pricing, CLI, SDK, API, and MCP.",
   "keywords": ["ai-benchmark", "agent-benchmark", "agent-evaluation", "llm-evaluation", "model-evaluation", "cost-per-task", "llm-cost", "evals", "grading", "openrouter", "openai", "mcp", "typescript"],
   "homepage": "https://private-repo-337e.com/benchmarks/benchmark-cost-per-task",
@@ -14,7 +14,7 @@
     "./api": { "types": "./dist/api.d.ts", "import": "./dist/api.js" }
   },
   "bin": { "benchmark-cost-per-task": "./dist/cli.js" },
-  "files": ["dist", "data", "docs", "README.md", "AGENTS.md", "llms.txt", "server.json", "LICENSE"],
+  "files": ["dist", "data", "docs", "scripts", "README.md", "AGENTS.md", "llms.txt", "server.json", "LICENSE"],
   "engines": { "node": ">=20" }, "sideEffects": false,
   "scripts": {
     "lint": "oxlint src scripts", "typecheck": "tsc --noEmit", "build": "tsup",
