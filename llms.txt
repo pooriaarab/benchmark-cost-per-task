@@ -18,7 +18,7 @@ The root exports benchmark, run, score, addEfficiency, compareReports, renderEff
 
 ## Commands
 
-The CLI supports list, show, run, score, compare, card, provenance, index-entry, serve, and mcp. Use `run --provider mock` for offline verification.
+The CLI supports list, show, run, score, compare, card, provenance, index-entry, serve, and mcp. Use `run --provider mock` for offline verification. Pass `--tasks <file>` (or `run({ tasks })`, or `?tasks=` on the API) to evaluate an alternate JSONL split. Version 0.2.0 changes cost aggregation; 0.1.0 scores are not comparable.
 
 ## Environment
 
