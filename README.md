@@ -160,7 +160,7 @@ npx benchmark-cost-per-task serve 3000
 
 Routes are `GET /health`, `GET /v1/tasks`, `GET /v1/tasks/:id`, `POST /v1/score`, `POST /v1/run`, `GET /v1/provenance`, and `GET /v1/index-entry`. `POST /v1/run` accepts `{ "model", "provider"?, "seed"?, "retries"?, "tasks"? }` and returns the full report with the efficiency breakdown.
 
-`?tasks=` and `POST /v1/run` accept only `.jsonl` files under `var/`, and the served task listing drops `expected` states. Files with `hidden` in the name are refused unless the server sets `BCPT_SERVE_HIDDEN=1`.
+`?tasks=` and `POST /v1/run` accept only `.jsonl` files under `var/`, and the served task listing drops `expected` states. Files with `hidden` in the name are refused unless the server sets `BCPT_SERVE_HIDDEN=1`. `serve` binds to `127.0.0.1` by default; passing `--host 0.0.0.0` exposes `POST /v1/run`, which can spend the server's provider keys, so only widen the bind on a trusted network.
 
 ## Read the score
 
