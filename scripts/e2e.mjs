@@ -215,6 +215,11 @@ try {
   const runBody = await ran.json();
   assert.equal(runBody.rows.length, 30);
   assert.ok(runBody.efficiency && typeof runBody.efficiency.costPerVerifiedSuccess !== "undefined");
+  const ranAlt = await fetch(`${base}/v1/run`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ model: "offline", provider: "mock", tasks: "var/tasks.alt.jsonl" }) });
+  routes["POST /v1/run (tasks)"] = ranAlt.status; assert.equal(ranAlt.status, 200);
+  assert.equal((await ranAlt.json()).rows.length, 30);
+  const ranHidden = await fetch(`${base}/v1/run`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ model: "offline", provider: "mock", tasks: "var/tasks.hidden.jsonl" }) });
+  routes["POST /v1/run (hidden)"] = ranHidden.status; assert.equal(ranHidden.status, 403);
   const runNoKey = await fetch(`${base}/v1/run`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ model: "openai/gpt-4o-mini" }) });
   routes["POST /v1/run (no key)"] = runNoKey.status; assert.equal(runNoKey.status, 400);
   assert.equal((await get("/v1/provenance")).response.status, 200);
