@@ -13,75 +13,193 @@ const cli = await execFile(process.execPath, ["dist/cli.js", "run", "--model", "
 const readable = await execFile(process.execPath, ["dist/cli.js", "run", "--provider", "mock"], { maxBuffer: 1_000_000 });
 assert.match(readable.stdout, /Score: \*\*53\.3%\*\*/);
 assert.match(readable.stdout, /Verified successes \| 16\/30/);
-assert.match(readable.stdout, /Cost per verified success \| \$0\.000000/);
+assert.match(readable.stdout, /Cost per verified success \| unavailable/);
 assert.match(readable.stdout, /## Efficiency/);
 const report = JSON.parse(cli.stdout);
 assert.equal(report.rows.length, 30);
 assert.ok(report.rows.some((row) => row.score === 1));
 assert.ok(report.rows.some((row) => row.score === 0));
 assert.ok(report.rows.every((row) => row.error === undefined));
-assert.equal(report.efficiency.costPerVerifiedSuccess, 0);
-assert.equal(report.efficiency.costSource, "provider");
+assert.equal(report.efficiency.costPerVerifiedSuccess, null);
+assert.equal(report.efficiency.costSource, "unavailable");
 
-const { benchmark, addEfficiency, estimateRowCostUsd, attachTrackedUsage, getBenchmark } = await import("../dist/index.js");
+const { benchmark, addEfficiency, estimateRowCostUsd, getBenchmark, run } = await import("../dist/index.js");
+const { handler } = await import("../dist/api.js");
 const tasks = await benchmark.listTasks();
 const goodScores = [];
-const badPolicies = {
-  empty: {}, random: { answer: "zebra-493" }, yes: { answer: "yes" },
-  forged: (task) => ({ finalState: task.expected }),
-  sameCall: { toolLog: [{ name: "finish_task", args: {}, result: { finished: true } }] },
-  reserved: (task) => ({ toolLog: [
-    { name: "write_file", args: { path: "__proto__", content: "x" }, result: null },
-    { name: "update_record", args: { id: task.input.records[0]?.id ?? "missing", fields: { constructor: 1 } }, result: null },
-    { name: "finish_task", args: {}, result: { finished: true } },
-  ] }),
-};
 for (const task of tasks) {
   const calls = benchmark.definition.mockPolicies.good(task)[0].toolCalls;
   goodScores.push((await benchmark.score(task, { toolLog: calls.map((call) => ({ ...call, result: null })) })).score);
 }
 assert.ok(goodScores.every((score) => score === 1));
+
+const constants = [{ answer: "yes" }, { answer: "no" }, { answer: "0" }, { answer: "done" }, { answer: "zebra-493" }];
+const badPolicies = {
+  empty: () => ({}),
+  refuse: () => ({ answer: "I cannot help with this request." }),
+  forged: (task) => ({ finalState: task.expected }),
+  sameCall: () => ({ toolLog: [{ name: "finish_task", args: {}, result: { finished: true } }] }),
+  burnTokens: (task) => ({ toolLog: [
+    ...Array.from({ length: 40 }, () => ({ name: "read_file", args: { path: Object.keys(task.input.files)[0] ?? "missing.txt" }, result: null })),
+    { name: "finish_task", args: {}, result: { finished: true } },
+  ] }),
+  reserved: (task) => ({ toolLog: [
+    { name: "write_file", args: { path: "__proto__", content: "x" }, result: null },
+    { name: "update_record", args: { id: task.input.records[0]?.id ?? "missing", fields: { constructor: 1 } }, result: null },
+    { name: "finish_task", args: {}, result: { finished: true } },
+  ] }),
+  ...Object.fromEntries(constants.map((constant, index) => [`constant-${index}`, () => constant])),
+};
 for (const [name, candidate] of Object.entries(badPolicies)) {
-  const scores = await Promise.all(tasks.map((task) => benchmark.score(task, typeof candidate === "function" ? candidate(task) : candidate)));
+  const scores = await Promise.all(tasks.map((task) => benchmark.score(task, candidate(task))));
   assert.ok(scores.reduce((sum, item) => sum + item.score, 0) / scores.length <= 0.1, `${name} policy scored too high`);
 }
 
-const unavailable = await addEfficiency({ ...report, model: "unknown:model", rows: report.rows.map((row) => ({ ...row, usage: { inputTokens: 1, outputTokens: 1 } })) });
+// A policy that sees only what a real model sees (prompt, system text, tool results) must solve every task.
+const visibleAdapter = () => ({
+  id: "probe:visible",
+  async complete() { throw new Error("episode benchmark does not call complete"); },
+  async chat(request) {
+    const prompt = request.messages.find((message) => message.role === "user")?.content ?? "";
+    const results = request.messages.filter((message) => message.role === "tool").map((message) => JSON.parse(message.content));
+    const call = (name, args, turn) => ({ content: "", toolCalls: [{ id: `v-${turn}`, name, args }], usage: { inputTokens: 10, outputTokens: 10, totalTokens: 20, costUsd: 0.0001 }, costUsd: 0.0001 });
+    const turn = results.length;
+    let match;
+    if ((match = /^Read (\S+)\. Sum (\w+) for invoices with status ([\w-]+)\. Write the integer total followed by a newline to (\S+), then finish the task\.$/.exec(prompt))) {
+      if (turn === 0) return call("read_file", { path: match[1] }, turn);
+      if (turn === 1) {
+        const lines = results[0].content.trim().split("\n");
+        const header = lines[0].split(",");
+        const total = lines.slice(1).map((line) => line.split(","))
+          .filter((row) => row[header.indexOf("status")] === match[3])
+          .reduce((sum, row) => sum + Number(row[header.indexOf(match[2])]), 0);
+        return call("write_file", { path: match[4], content: `${total}\n` }, turn);
+      }
+      return call("finish_task", {}, turn);
+    }
+    if ((match = /^List the CRM records\. Among active accounts, find the one with the greatest annualValue\. Set only its (\w+) field to ([\w-]+), then finish the task\.$/.exec(prompt))) {
+      if (turn === 0) return call("list_records", {}, turn);
+      if (turn === 1) {
+        const target = results[0].filter((record) => record.active).reduce((best, record) => record.annualValue > best.annualValue ? record : best);
+        return call("update_record", { id: target.id, fields: { [match[1]]: match[2] } }, turn);
+      }
+      return call("finish_task", {}, turn);
+    }
+    if ((match = /^Read (\S+)\. Change its Owner from (\w+) to (\w+) without changing any other text\. Write the file and finish the task\.$/.exec(prompt))) {
+      if (turn === 0) return call("read_file", { path: match[1] }, turn);
+      if (turn === 1) return call("write_file", { path: match[1], content: results[0].content.replace(`Owner: ${match[2]}`, `Owner: ${match[3]}`) }, turn);
+      return call("finish_task", {}, turn);
+    }
+    throw new Error(`visible policy could not parse prompt: ${prompt}`);
+  },
+});
+const visibleReport = await run(visibleAdapter(), { concurrency: 4 });
+assert.equal(visibleReport.rows.length, 30);
+assert.ok(visibleReport.rows.every((row) => row.score === 1), "visible-information policy must solve all 30 tasks");
+assert.ok(Math.abs(visibleReport.efficiency.totalCostUsd - 0.009) < 1e-12);
+assert.equal(visibleReport.efficiency.costSource, "provider");
+
+await mkdir("artifacts", { recursive: true });
+await writeFile("artifacts/probe-task.jsonl", `${JSON.stringify(tasks[0])}\n`);
+
+// Retry spend must be summed across attempts through a real run loop.
+const flaky = { episodes: 0 };
+const flakyAdapter = {
+  id: "probe:flaky",
+  async complete() { throw new Error("episode benchmark does not call complete"); },
+  async chat(request, context) {
+    const usage = { inputTokens: 30000, outputTokens: 0, totalTokens: 30000, costUsd: 0.03 };
+    if (context.turn === 1) {
+      return { content: "", toolCalls: [{ id: "f-1", name: "read_file", args: { path: Object.keys(context.task.input.files)[0] ?? "missing.txt" } }], usage, costUsd: 0.03 };
+    }
+    if (flaky.episodes === 0) { flaky.episodes += 1; throw new Error("Request timed out"); }
+    return { content: "", toolCalls: [{ id: "f-2", name: "finish_task", args: {} }], usage, costUsd: 0.03 };
+  },
+};
+const retried = await run(flakyAdapter, { tasks: "artifacts/probe-task.jsonl", retries: 1 });
+assert.equal(retried.rows[0].attempts, 2);
+assert.equal(retried.rows[0].usage.inputTokens, 90000);
+assert.equal(retried.efficiency.totalCostUsd, 0.09);
+assert.equal(retried.efficiency.retries, 1);
+assert.equal(retried.efficiency.costSource, "provider");
+
+// A task that fails every attempt still reports spend; an errored row without usage is known zero, never null.
+const deadAdapter = {
+  id: "probe:dead",
+  async complete() { throw new Error("provider down"); },
+  async chat() { throw new Error("provider down"); },
+};
+const failed = await run(deadAdapter, { tasks: "artifacts/probe-task.jsonl", retries: 1 });
+assert.equal(failed.rows[0].attempts, 2);
+assert.ok(failed.rows[0].error);
+assert.equal(failed.rows[0].usage, undefined);
+assert.notEqual(failed.efficiency.totalCostUsd, null);
+assert.equal(failed.efficiency.totalCostUsd, 0);
+
+// A provider that reports tokens but no cost is estimated from the price snapshot, not trusted as $0.
+const silentAdapter = {
+  id: "openai:gpt-4o-mini",
+  async complete() { throw new Error("episode benchmark does not call complete"); },
+  async chat(request, context) {
+    const usage = { inputTokens: 30000, outputTokens: 100, totalTokens: 30100 };
+    if (context.turn === 1) return { content: "", toolCalls: [{ id: "s-1", name: "read_file", args: { path: Object.keys(context.task.input.files)[0] ?? "missing.txt" } }], usage };
+    return { content: "", toolCalls: [{ id: "s-2", name: "finish_task", args: {} }], usage };
+  },
+};
+const silent = await run(silentAdapter, { tasks: "artifacts/probe-task.jsonl" });
+assert.equal(silent.rows[0].usage.costUsd, undefined);
+assert.equal(silent.efficiency.costSource, "estimated");
+assert.ok(Math.abs(silent.efficiency.totalCostUsd - (60000 * 1.5e-7 + 200 * 6e-7)) < 1e-12);
+
+// Fixed price table fixture: exact values for estimated, provider, retry, errored, and unpriced rows.
+const fixture = { source: "e2e fixed price table", retrievedAt: "2026-10-16T00:00:00.000Z", models: [{ id: "fixture/priced", promptUsdPerToken: 0.000001, completionUsdPerToken: 0.000002 }] };
+const row = (extra) => ({ taskId: "t", kind: "episode", score: 1, reason: "ok", attempts: 1, latencyMs: 1, ...extra });
+const fixed = await addEfficiency({ ...report, model: "openrouter:fixture/priced", rows: [
+  row({ usage: { inputTokens: 1000, outputTokens: 200, costUsd: 0 } }),
+  row({ usage: { inputTokens: 5000, outputTokens: 500, costUsd: 0.02 } }),
+  row({ error: "timeout", attempts: 2, score: 0 }),
+  row({ usage: { inputTokens: 60000, outputTokens: 0, costUsd: 0.09 }, attempts: 2 }),
+] }, { catalog: fixture });
+assert.ok(Math.abs(fixed.efficiency.totalCostUsd - (0.0014 + 0.02 + 0 + 0.09)) < 1e-12);
+assert.equal(fixed.efficiency.costSource, "mixed");
+const unpriced = await addEfficiency({ ...report, model: "openrouter:unlisted/model", rows: [row({ usage: { inputTokens: 5, outputTokens: 5 } })] }, { catalog: fixture });
+assert.equal(unpriced.efficiency.totalCostUsd, null);
+assert.equal(unpriced.efficiency.costSource, "unavailable");
+
+const unavailable = await addEfficiency({ ...report, model: "unknown:model", rows: report.rows.map((r) => ({ ...r, usage: { inputTokens: 1, outputTokens: 1 } })) });
 assert.equal(unavailable.efficiency.costPerVerifiedSuccess, null);
-const noSuccess = await addEfficiency({ ...report, rows: report.rows.map((row) => ({ ...row, score: 0 })) });
+const noSuccess = await addEfficiency({ ...report, rows: report.rows.map((r) => ({ ...r, score: 0 })) });
 assert.equal(noSuccess.efficiency.costPerVerifiedSuccess, null);
 
 const negativeRouter = await addEfficiency({
   ...report,
   model: "openrouter:openrouter/auto",
-  rows: [{ taskId: "probe", kind: "episode", score: 1, reason: "ok", attempts: 1, latencyMs: 1, usage: { inputTokens: 1000, outputTokens: 100 } }],
+  rows: [row({ usage: { inputTokens: 1000, outputTokens: 100 } })],
 });
 assert.equal(negativeRouter.efficiency.totalCostUsd, null);
 
+// The committed snapshot prices a mock run at exact values when the model id is priced.
 const prices = JSON.parse(await readFile("data/prices.json", "utf8"));
-const pricedModel = prices.models.find((model) => model.promptUsdPerToken > 0 && model.completionUsdPerToken > 0);
-assert.ok(pricedModel);
-const sampleCost = estimateRowCostUsd({ inputTokens: 1000, outputTokens: 200 }, pricedModel);
-assert.ok(sampleCost > 0);
-const priced = await addEfficiency({
-  ...report,
-  model: `openrouter:${pricedModel.id}`,
-  rows: [{ taskId: "priced", kind: "episode", score: 1, reason: "ok", attempts: 1, latencyMs: 1, usage: { inputTokens: 1000, outputTokens: 200 } }],
-});
-assert.ok(priced.efficiency.totalCostUsd > 0);
+const demoPrice = prices.models.find((model) => model.id === "openai/gpt-4o-mini");
+assert.ok(demoPrice);
+const demo = await execFile(process.execPath, ["dist/cli.js", "run", "--provider", "mock", "--model", "openai/gpt-4o-mini", "--json"], { maxBuffer: 1_000_000 });
+const demoReport = JSON.parse(demo.stdout);
+assert.equal(demoReport.efficiency.costSource, "estimated");
+const demoExpected = demoReport.rows.reduce((sum, r) => sum + estimateRowCostUsd(r.usage, demoPrice), 0);
+assert.ok(Math.abs(demoReport.efficiency.totalCostUsd - demoExpected) < 1e-12);
+assert.ok(demoReport.efficiency.totalCostUsd > 0);
 
-const retryRow = attachTrackedUsage(
-  { ...report, rows: [{ taskId: "invoice-total-01", kind: "episode", score: 0, reason: "Run failed: timeout", attempts: 2, latencyMs: 10, error: "timeout" }] },
-  () => ({ inputTokens: 500, outputTokens: 120, costUsd: 0.0025 }),
-);
-const retryCost = await addEfficiency({ ...report, model: "openrouter:offline", rows: retryRow.rows });
-assert.equal(retryCost.efficiency.totalCostUsd, 0.0025);
+// Regenerating the public split from the committed seed must be byte-identical.
+await execFile(process.execPath, ["scripts/gen-tasks.mjs", "--seed", "20261015", "--split", "public", "--output", "artifacts/tasks.regen.jsonl"]);
+assert.equal(await readFile("artifacts/tasks.regen.jsonl", "utf8"), await readFile("data/tasks.jsonl", "utf8"), "data/tasks.jsonl is stale");
 
 const hiddenSeed = "8844221";
 await execFile(process.execPath, ["scripts/gen-tasks.mjs", "--split", "hidden", "--seed", hiddenSeed]);
 const hiddenBench = getBenchmark("var/tasks.hidden.jsonl");
 const hiddenTasks = await hiddenBench.listTasks();
 assert.ok(hiddenTasks.every((task) => task.id.startsWith("h-")));
+const samePrompts = hiddenTasks.filter((hidden) => tasks.find((task) => task.id === hidden.id.slice(2))?.prompt === hidden.prompt).length;
+assert.ok(samePrompts <= 5, `${samePrompts} hidden prompts still equal the public text`);
 for (const hidden of hiddenTasks) {
   const publicTask = tasks.find((task) => task.id === hidden.id.slice(2));
   assert.ok(publicTask);
@@ -92,8 +210,8 @@ for (const hidden of hiddenTasks) {
 
 const hiddenList = await execFile(process.execPath, ["dist/cli.js", "--tasks", "var/tasks.hidden.jsonl", "list", "--json"], { maxBuffer: 1_000_000 });
 assert.equal(JSON.parse(hiddenList.stdout).tasks.length, 30);
+await execFile(process.execPath, ["scripts/gen-tasks.mjs", "--seed", "777", "--split", "public", "--output", "var/tasks.alt.jsonl"]);
 
-await mkdir("artifacts", { recursive: true });
 await writeFile("artifacts/mock-report.json", `${JSON.stringify(report)}\n`);
 const second = await execFile(process.execPath, ["dist/cli.js", "run", "--model", "offline", "--provider", "mock", "--seed", "2", "--json"], { maxBuffer: 1_000_000 });
 await writeFile("artifacts/mock-report-2.json", second.stdout);
@@ -101,12 +219,17 @@ const compared = await execFile(process.execPath, ["dist/cli.js", "compare", "ar
 assert.equal(JSON.parse(compared.stdout).rows.length, 2);
 await writeFile("artifacts/empty-report.json", `${JSON.stringify({ ...report, rows: [] })}\n`);
 await assert.rejects(execFile(process.execPath, ["dist/cli.js", "compare", "artifacts/mock-report.json", "artifacts/empty-report.json"]), /Invalid report/);
-const malformed = { ...report, rows: report.rows.map((row, index) => index === 0 ? { ...row, usage: { ...row.usage, costUsd: "abc" } } : row) };
+const malformed = { ...report, rows: report.rows.map((r, index) => index === 0 ? { ...r, usage: { ...r.usage, costUsd: "abc" } } : r) };
 await writeFile("artifacts/malformed-report.json", `${JSON.stringify(malformed)}\n`);
 await assert.rejects(execFile(process.execPath, ["dist/cli.js", "compare", "artifacts/mock-report.json", "artifacts/malformed-report.json"]), /Invalid report/);
+const rescored = await execFile(process.execPath, ["dist/cli.js", "score", "artifacts/mock-report.json"], { maxBuffer: 1_000_000 });
+assert.match(rescored.stdout, /## Efficiency/);
+assert.match(rescored.stdout, /Cost per verified success \|/);
+const rescoredJson = await execFile(process.execPath, ["dist/cli.js", "score", "artifacts/mock-report.json", "--json"], { maxBuffer: 1_000_000 });
+assert.ok(JSON.parse(rescoredJson.stdout).efficiency);
 for (const args of [
   ["list", "--json"], ["show", "invoice-total-01", "--json"],
-  ["score", "artifacts/mock-report.json", "--json"], ["card", "artifacts/mock-report.json", "artifacts/card.svg"],
+  ["card", "artifacts/mock-report.json", "artifacts/card.svg"],
   ["provenance", "--json"], ["index-entry", "--json"],
 ]) await execFile(process.execPath, ["dist/cli.js", ...args], { maxBuffer: 1_000_000 });
 
@@ -124,19 +247,39 @@ try {
   for (let attempt = 0; attempt < 100; attempt++) { try { await get("/health"); break; } catch { await new Promise((resolve) => setTimeout(resolve, 20)); } }
   const health = await get("/health"); assert.equal(health.response.status, 200);
   const listed = await get("/v1/tasks"); assert.equal(listed.value.tasks.length, 30);
-  const hiddenApi = await get(`/v1/tasks?tasks=${encodeURIComponent("var/tasks.hidden.jsonl")}`);
-  assert.equal(hiddenApi.value.tasks.length, 30);
-  assert.equal(hiddenApi.value.tasks[0].id.startsWith("h-"), true);
+  const altApi = await get(`/v1/tasks?tasks=${encodeURIComponent("var/tasks.alt.jsonl")}`);
+  assert.equal(altApi.value.tasks.length, 30);
+  assert.equal(altApi.value.tasks[0].expected, undefined);
+  const hiddenApi = await fetch(`${base}/v1/tasks?tasks=${encodeURIComponent("var/tasks.hidden.jsonl")}`);
+  routes["GET /v1/tasks?tasks=hidden"] = hiddenApi.status;
+  assert.equal(hiddenApi.status, 403);
   const rejected = await fetch(`${base}/v1/tasks?tasks=${encodeURIComponent("/etc/passwd")}`);
   routes["GET /v1/tasks?tasks=rejected"] = rejected.status;
   assert.equal(rejected.status, 400);
   const shown = await get("/v1/tasks/invoice-total-01"); assert.equal(shown.value.task.id, "invoice-total-01");
   const score = await fetch(`${base}/v1/score`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ taskId: "invoice-total-01", submission: report.rows[0].submission }) });
   routes["POST /v1/score"] = score.status; assert.equal(score.status, 200);
+  const ran = await fetch(`${base}/v1/run`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ model: "offline", provider: "mock" }) });
+  routes["POST /v1/run"] = ran.status; assert.equal(ran.status, 200);
+  const runBody = await ran.json();
+  assert.equal(runBody.rows.length, 30);
+  assert.ok(runBody.efficiency && typeof runBody.efficiency.costPerVerifiedSuccess !== "undefined");
+  const runNoKey = await fetch(`${base}/v1/run`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ model: "openai/gpt-4o-mini" }) });
+  routes["POST /v1/run (no key)"] = runNoKey.status; assert.equal(runNoKey.status, 400);
   assert.equal((await get("/v1/provenance")).response.status, 200);
   assert.equal((await get("/v1/index-entry")).value.task_count, 30);
   assert.equal((await get("/v1/index-entry")).value.version, "0.2.0");
 } finally { if (server.exitCode === null) { server.kill("SIGTERM"); await once(server, "exit"); } }
+
+process.env.BCPT_SERVE_HIDDEN = "1";
+const hiddenServed = await handler(new Request(`http://local/v1/tasks?tasks=${encodeURIComponent("var/tasks.hidden.jsonl")}`));
+assert.equal(hiddenServed.status, 200);
+const hiddenBody = await hiddenServed.json();
+assert.equal(hiddenBody.tasks.length, 30);
+assert.equal(hiddenBody.tasks[0].expected, undefined);
+delete process.env.BCPT_SERVE_HIDDEN;
+const hiddenBlocked = await handler(new Request(`http://local/v1/tasks?tasks=${encodeURIComponent("var/tasks.hidden.jsonl")}`));
+assert.equal(hiddenBlocked.status, 403);
 
 const transport = new StdioClientTransport({ command: process.execPath, args: ["dist/cli.js", "mcp"], cwd: process.cwd(), stderr: "pipe" });
 const client = new Client({ name: "benchmark-cost-per-task-e2e", version: "0.2.0" });
@@ -147,12 +290,19 @@ try {
   const calls = [
     ["list_tasks", {}], ["get_task", { taskId: "invoice-total-01" }],
     ["score_answer", { taskId: "invoice-total-01", submission: report.rows[0].submission }],
-    ["get_provenance", {}], ["run_benchmark", { model: "offline" }],
+    ["get_provenance", {}],
   ];
   for (const [name, args] of calls) {
     const result = await client.callTool({ name, arguments: args });
-    if (name === "run_benchmark") assert.equal(result.isError, true); else assert.notEqual(result.isError, true);
+    assert.notEqual(result.isError, true);
   }
+  const denied = await client.callTool({ name: "run_benchmark", arguments: { model: "offline" } });
+  assert.equal(denied.isError, true);
+  const ranMcp = await client.callTool({ name: "run_benchmark", arguments: { model: "offline", provider: "mock" } });
+  assert.notEqual(ranMcp.isError, true);
+  const mcpReport = JSON.parse(ranMcp.content[0].text);
+  assert.equal(mcpReport.rows.length, 30);
+  assert.ok(mcpReport.efficiency && "costPerVerifiedSuccess" in mcpReport.efficiency);
 } finally { await client.close(); }
 
 const artifact = { task_count: report.rows.length, scores: report.rows.map((row) => row.score), route_status_codes: routes, tool_names: toolNames };
