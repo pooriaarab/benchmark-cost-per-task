@@ -3,6 +3,15 @@ import type { RunReport } from "benchmark-core";
 
 interface Price { id: string; promptUsdPerToken: number; completionUsdPerToken: number }
 interface Prices { source: string; retrievedAt: string; models: Price[] }
+
+function priced(model: Price): boolean {
+  return Number.isFinite(model.promptUsdPerToken) && Number.isFinite(model.completionUsdPerToken)
+    && model.promptUsdPerToken >= 0 && model.completionUsdPerToken >= 0;
+}
+
+function sanitizeCatalog(catalog: Prices): Prices {
+  return { ...catalog, models: catalog.models.filter(priced) };
+}
 export interface EfficiencyMetrics {
   verifiedSuccesses: number; successRate: number; meanTurns: number; totalAttempts: number; retries: number;
   inputTokens: number | null; outputTokens: number | null; totalCostUsd: number | null;
@@ -17,17 +26,21 @@ async function prices(live: boolean): Promise<Prices> {
       const response = await fetch("https://openrouter.ai/api/v1/models", { headers: { accept: "application/json" } });
       if (response.ok) {
         const body = await response.json() as { data: Array<{ id: string; pricing?: { prompt?: string; completion?: string } }> };
-        return { source: "https://openrouter.ai/api/v1/models (live)", retrievedAt: new Date().toISOString(), models: body.data.map((item) => ({ id: item.id, promptUsdPerToken: Number(item.pricing?.prompt), completionUsdPerToken: Number(item.pricing?.completion) })).filter((item) => Number.isFinite(item.promptUsdPerToken) && Number.isFinite(item.completionUsdPerToken)) };
+        return sanitizeCatalog({ source: "https://openrouter.ai/api/v1/models (live)", retrievedAt: new Date().toISOString(), models: body.data.map((item) => ({ id: item.id, promptUsdPerToken: Number(item.pricing?.prompt), completionUsdPerToken: Number(item.pricing?.completion) })) });
       }
     } catch { /* The committed snapshot is the documented offline fallback. */ }
   }
-  return JSON.parse(await readFile(new URL("../data/prices.json", import.meta.url), "utf8")) as Prices;
+  return sanitizeCatalog(JSON.parse(await readFile(new URL("../data/prices.json", import.meta.url), "utf8")) as Prices);
+}
+
+export function estimateRowCostUsd(usage: { inputTokens?: number; outputTokens?: number }, price: Price): number {
+  return (usage.inputTokens ?? 0) * price.promptUsdPerToken + (usage.outputTokens ?? 0) * price.completionUsdPerToken;
 }
 
 export async function addEfficiency(report: RunReport, preferLive = false): Promise<CostReport> {
   const catalog = await prices(preferLive);
   const modelId = report.model.replace(/^(openrouter|openai):/, "");
-  const price = catalog.models.find((item) => item.id === modelId);
+  const price = catalog.models.find((item) => item.id === modelId && priced(item));
   const costs: Array<number | undefined> = [];
   const sources = new Set<"provider" | "snapshot" | "live">();
   for (const row of report.rows) {
