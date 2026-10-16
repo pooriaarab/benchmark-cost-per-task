@@ -247,3 +247,18 @@ benchmark-cost-per-task generates a hidden file with `node scripts/gen-tasks.mjs
 ## License
 
 [MIT](LICENSE) © Pooria Arab
+
+## Cite
+
+Please cite this package with its Zenodo DOI. The DOI below names all versions. GitHub also shows a "Cite this repository" box from `CITATION.cff`.
+
+```bibtex
+@software{arab2026benchmarkcostpertask,
+  author  = {Arab, Pooria},
+  title   = {benchmark-cost-per-task},
+  year    = {2026},
+  version = {0.2.0},
+  doi     = {10.5281/zenodo.23422371},
+  url     = {https://aibenchmarkindex.com/benchmarks/benchmark-cost-per-task}
+}
+```
