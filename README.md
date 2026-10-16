@@ -17,6 +17,19 @@ npx benchmark-cost-per-task run --provider mock
 - Score: **53.3%**
 - 95% CI: 36.7%–70.0%
 - Tasks: 30
+
+## Efficiency
+
+| Metric | Value |
+| --- | ---: |
+| Verified successes | 16/30 |
+| Success rate | 53.3% |
+| Cost per verified success | $0.000000 |
+| Cost per attempt | $0.000000 |
+| Mean turns | 1.00 |
+| Retries | 0 |
+| Input / output tokens | 8485 / 0 |
+| Cost source | provider |
 ```
 
 The 30 public episodes come from a committed seeded generator. A dated OpenRouter model-price snapshot supports offline cost estimates.
@@ -219,7 +232,7 @@ benchmark-cost-per-task uses tool episodes and exact simulator state. A general 
 
 ### Can I use a hidden split?
 
-benchmark-cost-per-task generates a hidden file with `--split hidden`. Keep its seed and JSONL outside the repository and npm package.
+benchmark-cost-per-task generates a hidden file with `node scripts/gen-tasks.mjs --split hidden --seed <private>`. Output lands in `var/tasks.hidden.jsonl`, which is not published to npm. Run it with `benchmark-cost-per-task --tasks var/tasks.hidden.jsonl run ...`.
 
 ## License
 

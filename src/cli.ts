@@ -1,10 +1,12 @@
 #!/usr/bin/env node
 import { readFile } from "node:fs/promises";
-import { createCli, renderMarkdown, type RunReport } from "benchmark-core";
-import { benchmark } from "./benchmark.js";
+import { parseArgs } from "node:util";
+import { createCli, mockAdapter, openaiCompatAdapter, openrouterAdapter, renderMarkdown, serve, type RunReport } from "benchmark-core";
+import { handler } from "./api.js";
+import { getBenchmark, parseTasksArgv } from "./benchmark.js";
 import { addEfficiency, compareReports, renderComparison, renderEfficiency, type CostReport } from "./metrics.js";
+import { run } from "./index.js";
 
-const core = createCli(benchmark, { bin: "benchmark-cost-per-task" });
 const record = (value: unknown): value is Record<string, unknown> => value !== null && typeof value === "object" && !Array.isArray(value);
 const finite = (value: unknown): value is number => typeof value === "number" && Number.isFinite(value);
 
@@ -25,10 +27,21 @@ function validReport(value: unknown): value is RunReport | CostReport {
   return true;
 }
 
+function providerAdapter(provider: string, model: string, bench: ReturnType<typeof getBenchmark>, seed: number) {
+  if (provider === "mock") return mockAdapter({ seed, ...bench.definition.mockPolicies ? { policies: bench.definition.mockPolicies } : {} });
+  if (provider === "openrouter") return openrouterAdapter({ model });
+  if (provider === "openai") return openaiCompatAdapter({ model });
+  throw new Error("--provider must be openrouter, openai, or mock.");
+}
+
 async function main(argv: string[]): Promise<number> {
-  if (argv[0] === "compare") {
-    const json = argv.includes("--json");
-    const files = argv.slice(1).filter((arg) => arg !== "--json");
+  const { tasksPath, argv: rest } = parseTasksArgv(argv);
+  const bench = getBenchmark(tasksPath);
+  const core = createCli(bench, { bin: "benchmark-cost-per-task" });
+
+  if (rest[0] === "compare") {
+    const json = rest.includes("--json");
+    const files = rest.slice(1).filter((arg) => arg !== "--json");
     try {
       const reports = await Promise.all(files.map(async (file) => {
         const value: unknown = JSON.parse(await readFile(file, "utf8"));
@@ -39,19 +52,48 @@ async function main(argv: string[]): Promise<number> {
       console.log(json ? JSON.stringify(comparison) : renderComparison(comparison)); return 0;
     } catch (error) { console.error(error instanceof Error ? error.message : String(error)); return 1; }
   }
-  if (argv[0] !== "run") return core.main(argv);
-  if (argv.includes("--provider") && argv[argv.indexOf("--provider") + 1] === "mock" && !argv.includes("--model")) argv = [...argv, "--model", "offline"];
-  const json = argv.includes("--json"); let output = "";
-  const original = console.log;
-  console.log = (...values: unknown[]) => { output += `${values.join(" ")}\n`; };
-  let code: number;
-  try { code = await core.main(json ? argv : [...argv, "--json"]); }
-  finally { console.log = original; }
-  if (code !== 0) return code;
-  const base = JSON.parse(output) as RunReport;
-  const report = await addEfficiency(base, base.model.startsWith("openrouter:") && Boolean(process.env.OPENROUTER_API_KEY));
-  original(json ? JSON.stringify(report) : `${renderMarkdown(report)}\n\n${renderEfficiency(report)}`);
-  return code;
+
+  if (rest[0] === "run") {
+    let runArgv = [...rest];
+    if (runArgv.includes("--provider") && runArgv[runArgv.indexOf("--provider") + 1] === "mock" && !runArgv.includes("--model")) runArgv = [...runArgv, "--model", "offline"];
+    const json = runArgv.includes("--json");
+    const clean = runArgv.slice(1).filter((arg) => arg !== "--json");
+    try {
+      const parsed = parseArgs({ args: clean, options: { model: { type: "string" }, provider: { type: "string" }, concurrency: { type: "string" }, timeout: { type: "string" }, retries: { type: "string" }, seed: { type: "string" }, "max-turns": { type: "string" }, "max-tool-calls": { type: "string" }, budget: { type: "string" } }, strict: true });
+      const model = parsed.values.model;
+      const provider = parsed.values.provider;
+      if (!model || !provider) throw new Error("run needs --model and --provider.");
+      const seed = Number(parsed.values.seed ?? 1);
+      const report = await run(providerAdapter(provider, model, bench, seed), {
+        ...parsed.values.concurrency ? { concurrency: Number(parsed.values.concurrency) } : {},
+        ...parsed.values.timeout ? { timeoutMs: Number(parsed.values.timeout) } : {},
+        ...parsed.values.retries ? { retries: Number(parsed.values.retries) } : {},
+        seed,
+        ...parsed.values["max-turns"] ? { maxTurns: Number(parsed.values["max-turns"]) } : {},
+        ...parsed.values["max-tool-calls"] ? { maxToolCalls: Number(parsed.values["max-tool-calls"]) } : {},
+        ...parsed.values.budget ? { budgetUsd: Number(parsed.values.budget) } : {},
+        ...tasksPath ? { tasks: tasksPath } : {},
+      });
+      console.log(json ? JSON.stringify(report) : `${renderMarkdown(report)}\n\n${renderEfficiency(report)}`);
+      return report.rows.some((row) => row.error) ? 2 : 0;
+    } catch (error) {
+      console.error(error instanceof Error ? error.message : String(error));
+      return 1;
+    }
+  }
+
+  if (rest[0] === "serve") {
+    const clean = rest.slice(1).filter((arg) => arg !== "--json");
+    const parsed = parseArgs({ args: clean, options: { host: { type: "string" } }, allowPositionals: true, strict: true });
+    if (parsed.positionals.length > 1) throw new Error("serve accepts at most one port.");
+    const port = Number(parsed.positionals[0] ?? process.env.PORT ?? 3000);
+    const hostname = parsed.values.host ?? "127.0.0.1";
+    if (!Number.isInteger(port) || port < 0 || port > 65535) throw new Error("serve port must be an integer from 0 to 65535.");
+    await serve(handler, { port, hostname });
+    console.log(`Listening on http://${hostname}:${port}`);
+    return 0;
+  }
+  return core.main(rest);
 }
 
 process.exitCode = await main(process.argv.slice(2));

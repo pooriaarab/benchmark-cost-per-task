@@ -1,3 +1,8 @@
 import { createHandler } from "benchmark-core";
-import { benchmark } from "./benchmark.js";
-export const handler = createHandler(benchmark);
+import { getBenchmark } from "./benchmark.js";
+
+export async function handler(request: Request): Promise<Response> {
+  const url = new URL(request.url);
+  const tasks = url.searchParams.get("tasks") ?? undefined;
+  return createHandler(getBenchmark(tasks))(request);
+}
