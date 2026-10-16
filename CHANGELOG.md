@@ -9,7 +9,7 @@
 - Route MCP `run_benchmark`, the new `POST /v1/run`, and the CLI `score` and `run` commands through the same usage-tracked run, so every surface reports the efficiency breakdown.
 - The HTTP API refuses `hidden` task files unless `BCPT_SERVE_HIDDEN=1` is set, and strips `expected` states from externally loaded task listings.
 - Add `--tasks <file>` to the CLI and SDK `run({ tasks })`, and `?tasks=` on the HTTP API, for alternate task files.
-- **Scoring note:** 0.1.0 efficiency numbers and headline costs are not comparable to 0.2.0 because retry spend and pricing fixes change totals.
+- **Scoring note:** 0.1.0 efficiency numbers and headline costs are not comparable to 0.2.0 because retry spend and pricing fixes change totals; the public tasks were also regenerated, so per-task rows differ too.
 
 ## 0.1.0
 

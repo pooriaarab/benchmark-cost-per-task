@@ -199,7 +199,7 @@ const hiddenBench = getBenchmark("var/tasks.hidden.jsonl");
 const hiddenTasks = await hiddenBench.listTasks();
 assert.ok(hiddenTasks.every((task) => task.id.startsWith("h-")));
 const samePrompts = hiddenTasks.filter((hidden) => tasks.find((task) => task.id === hidden.id.slice(2))?.prompt === hidden.prompt).length;
-assert.ok(samePrompts <= 5, `${samePrompts} hidden prompts still equal the public text`);
+assert.equal(samePrompts, 0, "hidden prompts must differ from the public text");
 for (const hidden of hiddenTasks) {
   const publicTask = tasks.find((task) => task.id === hidden.id.slice(2));
   assert.ok(publicTask);
