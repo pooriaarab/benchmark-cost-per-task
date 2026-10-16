@@ -44,12 +44,13 @@ async function runRoute(request: Request): Promise<Response> {
   if (typeof payload.tasks === "string" && !tasks) return Response.json({ error: "tasks must be a .jsonl file under var/." }, { status: 400 });
   if (tasks && hiddenDenied(tasks)) return hiddenResponse();
   const seed = typeof payload.seed === "number" && Number.isInteger(payload.seed) ? payload.seed : 1;
-  const retries = typeof payload.retries === "number" && Number.isInteger(payload.retries) && payload.retries >= 0 ? payload.retries : 0;
+  const retries = typeof payload.retries === "number" && Number.isInteger(payload.retries) && payload.retries >= 0 ? Math.min(payload.retries, 5) : 0;
   try {
     const report = await run(providerAdapter(provider, payload.model, getBenchmark(tasks), seed), { seed, retries, ...tasks ? { tasks } : {} });
     return Response.json(report);
   } catch (error) {
-    return Response.json({ error: error instanceof Error ? error.message : String(error) }, { status: 500 });
+    console.error("POST /v1/run failed:", error);
+    return Response.json({ error: "The benchmark run failed." }, { status: 500 });
   }
 }
 

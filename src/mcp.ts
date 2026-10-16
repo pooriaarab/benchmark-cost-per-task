@@ -43,7 +43,7 @@ export function createMcpServer(): Server {
         if (provider === "openrouter" && !process.env.OPENROUTER_API_KEY) return content({ error: "OPENROUTER_API_KEY is required to run a benchmark." }, true);
         if (provider === "openai" && !process.env.OPENAI_API_KEY) return content({ error: "OPENAI_API_KEY is required to run a benchmark." }, true);
         const seed = typeof input.seed === "number" && Number.isInteger(input.seed) ? input.seed : 1;
-        const retries = typeof input.retries === "number" && Number.isInteger(input.retries) && input.retries >= 0 ? input.retries : 0;
+        const retries = typeof input.retries === "number" && Number.isInteger(input.retries) && input.retries >= 0 ? Math.min(input.retries, 5) : 0;
         return content(await run(providerAdapter(provider, input.model, benchmark, seed), { seed, retries }));
       }
       if (request.params.name === "get_provenance") return content({ provenance: benchmark.definition.provenance });
