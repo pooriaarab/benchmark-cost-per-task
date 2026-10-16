@@ -1,11 +1,13 @@
 #!/usr/bin/env node
 import { readFile } from "node:fs/promises";
 import { parseArgs } from "node:util";
-import { createCli, mockAdapter, openaiCompatAdapter, openrouterAdapter, renderMarkdown, serve, type RunReport } from "benchmark-core";
+import { bootstrapCI, createCli, renderMarkdown, serve, type RunReport } from "benchmark-core";
 import { handler } from "./api.js";
+import { providerAdapter } from "./adapters.js";
 import { getBenchmark, parseTasksArgv } from "./benchmark.js";
 import { addEfficiency, compareReports, renderComparison, renderEfficiency, type CostReport } from "./metrics.js";
 import { run } from "./index.js";
+import { startMcp } from "./mcp.js";
 
 const record = (value: unknown): value is Record<string, unknown> => value !== null && typeof value === "object" && !Array.isArray(value);
 const finite = (value: unknown): value is number => typeof value === "number" && Number.isFinite(value);
@@ -25,13 +27,6 @@ function validReport(value: unknown): value is RunReport | CostReport {
     if (!record(value.efficiency) || !finite(value.efficiency.successRate) || value.efficiency.successRate < 0 || value.efficiency.successRate > 1 || (value.efficiency.costPerVerifiedSuccess !== null && (!finite(value.efficiency.costPerVerifiedSuccess) || (value.efficiency.costPerVerifiedSuccess as number) < 0))) return false;
   }
   return true;
-}
-
-function providerAdapter(provider: string, model: string, bench: ReturnType<typeof getBenchmark>, seed: number) {
-  if (provider === "mock") return mockAdapter({ seed, ...bench.definition.mockPolicies ? { policies: bench.definition.mockPolicies } : {} });
-  if (provider === "openrouter") return openrouterAdapter({ model });
-  if (provider === "openai") return openaiCompatAdapter({ model });
-  throw new Error("--provider must be openrouter, openai, or mock.");
 }
 
 async function main(argv: string[]): Promise<number> {
@@ -82,6 +77,27 @@ async function main(argv: string[]): Promise<number> {
     }
   }
 
+  if (rest[0] === "score") {
+    const json = rest.includes("--json");
+    const file = rest.slice(1).filter((arg) => arg !== "--json")[0];
+    try {
+      if (!file) throw new Error("score needs a results JSON file.");
+      const original: unknown = JSON.parse(await readFile(file, "utf8"));
+      if (!validReport(original)) throw new Error("File is not a run report.");
+      const rows = [];
+      for (const row of original.rows) {
+        const task = await bench.getTask(row.taskId);
+        if (!task || row.submission === undefined) throw new Error(`Cannot score task ${row.taskId}.`);
+        const grade = await bench.score(task, row.submission, { seed: original.seed });
+        rows.push({ ...row, score: grade.score, reason: grade.reason });
+      }
+      const scores = rows.map((row) => row.score);
+      const rescored = await addEfficiency({ ...original, rows, mean: scores.reduce((sum, item) => sum + item, 0) / scores.length, confidenceInterval95: bootstrapCI(scores, original.seed) });
+      console.log(json ? JSON.stringify(rescored) : `${renderMarkdown(rescored)}\n\n${renderEfficiency(rescored)}`);
+      return 0;
+    } catch (error) { console.error(error instanceof Error ? error.message : String(error)); return 1; }
+  }
+
   if (rest[0] === "serve") {
     const clean = rest.slice(1).filter((arg) => arg !== "--json");
     const parsed = parseArgs({ args: clean, options: { host: { type: "string" } }, allowPositionals: true, strict: true });
@@ -91,6 +107,10 @@ async function main(argv: string[]): Promise<number> {
     if (!Number.isInteger(port) || port < 0 || port > 65535) throw new Error("serve port must be an integer from 0 to 65535.");
     await serve(handler, { port, hostname });
     console.log(`Listening on http://${hostname}:${port}`);
+    return 0;
+  }
+  if (rest[0] === "mcp") {
+    await startMcp();
     return 0;
   }
   return core.main(rest);

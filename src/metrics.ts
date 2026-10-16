@@ -16,7 +16,11 @@ export interface EfficiencyMetrics {
   verifiedSuccesses: number; successRate: number; meanTurns: number; totalAttempts: number; retries: number;
   inputTokens: number | null; outputTokens: number | null; totalCostUsd: number | null;
   costPerAttempt: number | null; costPerVerifiedSuccess: number | null;
-  costSource: "provider" | "snapshot" | "live" | "mixed" | "unavailable";
+  costSource: "provider" | "estimated" | "mixed" | "unavailable";
+}
+export interface EfficiencyOptions {
+  preferLive?: boolean;
+  catalog?: Prices;
 }
 export type CostReport = RunReport & { efficiency: EfficiencyMetrics; pricing: { source: string; retrievedAt: string } };
 
@@ -37,18 +41,25 @@ export function estimateRowCostUsd(usage: { inputTokens?: number; outputTokens?:
   return (usage.inputTokens ?? 0) * price.promptUsdPerToken + (usage.outputTokens ?? 0) * price.completionUsdPerToken;
 }
 
-export async function addEfficiency(report: RunReport, preferLive = false): Promise<CostReport> {
-  const catalog = await prices(preferLive);
-  const modelId = report.model.replace(/^(openrouter|openai):/, "");
-  const price = catalog.models.find((item) => item.id === modelId && priced(item));
+export async function addEfficiency(report: RunReport, options: boolean | EfficiencyOptions = {}): Promise<CostReport> {
+  const { preferLive = false, catalog: given } = typeof options === "boolean" ? { preferLive: options, catalog: undefined } : options;
+  const catalog = given ?? await prices(preferLive);
+  const providerPrefix = /^(openrouter|openai|mock):/.exec(report.model)?.[1];
+  const modelId = providerPrefix ? report.model.slice(providerPrefix.length + 1) : report.model;
+  const price = catalog.models.find((item) => item.id === modelId && priced(item))
+    ?? (providerPrefix === "openai" ? catalog.models.find((item) => item.id === `openai/${modelId}` && priced(item)) : undefined);
   const costs: Array<number | undefined> = [];
-  const sources = new Set<"provider" | "snapshot" | "live">();
+  const sources = new Set<"provider" | "estimated">();
   for (const row of report.rows) {
-    if (row.usage?.costUsd !== undefined) { costs.push(row.usage.costUsd); sources.add("provider"); continue; }
-    if (price && row.usage?.inputTokens !== undefined && row.usage.outputTokens !== undefined) {
-      costs.push(row.usage.inputTokens * price.promptUsdPerToken + row.usage.outputTokens * price.completionUsdPerToken);
-      sources.add(preferLive && catalog.source.endsWith("(live)") ? "live" : "snapshot");
-    } else costs.push(undefined);
+    const usage = row.usage;
+    if (usage?.costUsd !== undefined && usage.costUsd > 0) { costs.push(usage.costUsd); sources.add("provider"); continue; }
+    if (price && usage?.inputTokens !== undefined && usage.outputTokens !== undefined) {
+      costs.push(estimateRowCostUsd(usage, price));
+      sources.add("estimated");
+      continue;
+    }
+    if (row.error !== undefined) { costs.push(0); continue; }
+    costs.push(undefined);
   }
   const allKnown = costs.every((cost) => cost !== undefined);
   const totalCostUsd = allKnown ? costs.reduce<number>((sum, cost) => sum + (cost ?? 0), 0) : null;
@@ -57,7 +68,7 @@ export async function addEfficiency(report: RunReport, preferLive = false): Prom
   const turns = report.rows.map((row) => row.episode?.turns).filter((turn): turn is number => turn !== undefined);
   const input = report.rows.map((row) => row.usage?.inputTokens);
   const output = report.rows.map((row) => row.usage?.outputTokens);
-  const source = !allKnown ? "unavailable" : sources.size > 1 ? "mixed" : [...sources][0] ?? "unavailable";
+  const source = !allKnown ? "unavailable" : sources.size > 1 ? "mixed" : [...sources][0] ?? "estimated";
   return { ...report, efficiency: {
     verifiedSuccesses, successRate: report.rows.length ? verifiedSuccesses / report.rows.length : 0,
     meanTurns: turns.length ? turns.reduce((sum, turn) => sum + turn, 0) / turns.length : 0,

@@ -35,7 +35,6 @@ export function withUsageTracking(adapter: ModelAdapter) {
 
 export function attachTrackedUsage(report: RunReport, usageFor: (taskId: string) => ModelUsage | undefined): RunReport {
   const rows = report.rows.map((row) => {
-    if (row.usage) return row;
     const usage = usageFor(row.taskId);
     return usage ? { ...row, usage } : row;
   });

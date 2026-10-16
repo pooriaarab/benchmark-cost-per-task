@@ -10,7 +10,7 @@ Directory: https://aibenchmarkindex.com/benchmarks/benchmark-cost-per-task
 
 The package contains 30 seeded synthetic episodes: 10 invoice calculations, 10 CRM updates, and 10 file edits. The grader replays tool calls against a fresh virtual workspace and requires an exact final state plus finish_task.
 
-Provider cost is authoritative. Missing cost is estimated from token counts and the live or committed OpenRouter price catalogue. Unknown costs remain null.
+Provider cost is authoritative only when it reports a positive dollar amount. Otherwise cost is estimated from token counts and the live or committed OpenRouter price catalogue and marked source `estimated`. Unknown costs remain null. Retry and errored-attempt spend is included in every row total.
 
 ## Exports
 

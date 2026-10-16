@@ -6,6 +6,7 @@ import { attachTrackedUsage, withUsageTracking } from "./usage-tracker.js";
 export type CostRunOptions = RunOptions & { tasks?: string };
 
 export { benchmark, getBenchmark, loadTasksFrom, parseTasksArgv } from "./benchmark.js";
+export { providerAdapter } from "./adapters.js";
 export * from "./metrics.js";
 export { attachTrackedUsage, withUsageTracking } from "./usage-tracker.js";
 
@@ -14,7 +15,7 @@ export const run = async (adapter: ModelAdapter, options?: CostRunOptions) => {
   const tracked = withUsageTracking(adapter);
   const base = await runBenchmark(bench, tracked.adapter, options);
   const report = attachTrackedUsage(base, tracked.usageFor);
-  return addEfficiency(report, adapter.id.startsWith("openrouter:") && Boolean(process.env.OPENROUTER_API_KEY));
+  return addEfficiency(report, { preferLive: adapter.id.startsWith("openrouter:") && Boolean(process.env.OPENROUTER_API_KEY) });
 };
 
 export async function score(taskId: string, submission: Trace, tasksPath?: string) {
