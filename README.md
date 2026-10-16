@@ -7,13 +7,13 @@
 benchmark-cost-per-task is an open-source AI agent benchmark for dollars per verified back-office task. It measures successful work, retries, turns, and tokens. Deterministic simulators check every result.
 
 ```bash
-npx benchmark-cost-per-task run --provider mock
+npx benchmark-cost-per-task run --provider mock --model openai/gpt-4o-mini
 ```
 
 ```text
 # Cost Per Task
 
-- Model: `mock:1`
+- Model: `mock:openai/gpt-4o-mini`
 - Score: **53.3%**
 - 95% CI: 36.7%–70.0%
 - Tasks: 30
@@ -24,13 +24,15 @@ npx benchmark-cost-per-task run --provider mock
 | --- | ---: |
 | Verified successes | 16/30 |
 | Success rate | 53.3% |
-| Cost per verified success | $0.000000 |
-| Cost per attempt | $0.000000 |
+| Cost per verified success | $0.000080 |
+| Cost per attempt | $0.000043 |
 | Mean turns | 1.00 |
 | Retries | 0 |
-| Input / output tokens | 8485 / 0 |
-| Cost source | provider |
+| Input / output tokens | 8586 / 0 |
+| Cost source | estimated |
 ```
+
+The mock provider needs no key or network. Naming a priced model after `--model` prices the run from the committed OpenRouter snapshot; without one the run reports cost as unavailable rather than inventing zero.
 
 The 30 public episodes come from a committed seeded generator. A dated OpenRouter model-price snapshot supports offline cost estimates.
 
@@ -52,7 +54,11 @@ The mock provider needs no key or network access.
 npx benchmark-cost-per-task run --provider mock
 ```
 
-A successful run prints 30 task rows and an Efficiency table. The fixed mock policy produces both accepted and rejected work.
+A successful run prints 30 task rows and an Efficiency table. The fixed mock policy produces both accepted and rejected work. Pass a priced model id to see estimated spend from the committed snapshot:
+
+```bash
+npx benchmark-cost-per-task run --provider mock --model openai/gpt-4o-mini
+```
 
 Run a real model through OpenRouter:
 
@@ -142,7 +148,7 @@ npx benchmark-cost-per-task compare model-a.json model-b.json
 npx benchmark-cost-per-task mcp
 ```
 
-The MCP tools are `list_tasks`, `get_task`, `score_answer`, `run_benchmark`, and `get_provenance`.
+The MCP tools are `list_tasks`, `get_task`, `score_answer`, `run_benchmark`, and `get_provenance`. `run_benchmark` takes `model`, an optional `provider` (`openrouter`, `openai`, or `mock`), `seed`, and `retries`, and returns the full report including the efficiency breakdown.
 
 ### HTTP API
 
@@ -152,7 +158,9 @@ Import `handler` from `benchmark-cost-per-task/api`, or start the self-hosted se
 npx benchmark-cost-per-task serve 3000
 ```
 
-Routes are `GET /health`, `GET /v1/tasks`, `GET /v1/tasks/:id`, `POST /v1/score`, `GET /v1/provenance`, and `GET /v1/index-entry`.
+Routes are `GET /health`, `GET /v1/tasks`, `GET /v1/tasks/:id`, `POST /v1/score`, `POST /v1/run`, `GET /v1/provenance`, and `GET /v1/index-entry`. `POST /v1/run` accepts `{ "model", "provider"?, "seed"?, "retries"?, "tasks"? }` and returns the full report with the efficiency breakdown.
+
+`?tasks=` and `POST /v1/run` accept only `.jsonl` files under `var/`, and the served task listing drops `expected` states. Files with `hidden` in the name are refused unless the server sets `BCPT_SERVE_HIDDEN=1`.
 
 ## Read the score
 
@@ -162,11 +170,13 @@ A task scores 1 only when all files and CRM records match and the trace calls `f
 
 ## Data provenance
 
-Run `npm run generate:tasks` to recreate the public set with seed 20261015. Generate an unpublished split without committing it:
+Run `npm run generate:tasks` to recreate the public set with seed 20261015. The generator ships inside the npm package, so an installed copy works too. Generate an unpublished split without committing it:
 
 ```bash
 node scripts/gen-tasks.mjs --seed 987654 --split hidden
 ```
+
+Hidden tasks carry `h-` ids, different prompt wording, and different expected states, and they never ship in `data/` or the npm tarball.
 
 Run `npm run fetch:prices` to refresh `data/prices.json` from the public OpenRouter models endpoint. `data/PROVENANCE.md` records retrieval, licence, contamination, and refresh details.
 
@@ -188,7 +198,7 @@ Run `npm run fetch:prices` to refresh `data/prices.json` from the public OpenRou
 
 ## Status
 
-Version 0.1.0 is alpha. Task schemas and metric fields can change before 1.0. Report defects through the GitHub issue tracker.
+Version 0.2.0 is alpha. Task schemas and metric fields can change before 1.0. Report defects through the GitHub issue tracker.
 
 No public leaderboard exists yet. Public model runs and case studies have not been published.
 
@@ -224,7 +234,7 @@ benchmark-cost-per-task generates synthetic invoice, CRM, and file fixtures from
 
 ### How does benchmark-cost-per-task price a run?
 
-benchmark-cost-per-task prefers cost returned by the model provider. It estimates missing cost from token usage and live or snapshot OpenRouter prices.
+benchmark-cost-per-task trusts cost returned by the model provider only when a positive dollar amount is reported. Otherwise it estimates from token usage and live or snapshot OpenRouter prices, and marks the source `estimated`.
 
 ### How is benchmark-cost-per-task different from a chat leaderboard?
 
