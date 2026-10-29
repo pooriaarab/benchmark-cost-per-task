@@ -1,0 +1,22 @@
+\newcommand{\PaperTitle}{Cost per Verified Task: Replay-Based Evaluation of Back-Office Agents}
+\newcommand{\PaperAbstract}{Cost per attempted task can conceal expensive failures. We study cost per verified success on 30 synthetic back-office tasks, using deterministic replay of file and customer-record operations. A privileged oracle completes every task (95\% Wilson interval: 88.6-100.0\%); each of six trivial policies completes none (0.0-11.4\%). Ninety invalid-trace probes fail verification. A simulated population sweep compares direct execution with a redundant read-only control under a fixed artificial token tariff. The control preserves success and doubles assumed cost per success. These results validate accounting and replay behavior, not learned-agent ability or provider prices. No hosted model or human study is included.}
+\newcommand{\AuthorOrcid}{0009-0005-9964-6841}
+\newcommand{\TaskCount}{30}
+\newcommand{\OracleRate}{100.0 [88.6, 100.0]}
+\newcommand{\FloorRate}{0.0 [0.0, 11.4]}
+\newcommand{\ProbeCount}{90}
+\newcommand{\PolicyCount}{7}
+\newcommand{\PopulationRuns}{200}
+\newcommand{\PopulationEpisodes}{6000}
+\newcommand{\SeedCount}{20}
+\newcommand{\DrawCount}{2000}
+\newcommand{\ExtraCost}{0.001200}
+\newcommand{\CostMultiplier}{2}
+\newcommand{\InputTokens}{1000}
+\newcommand{\OutputTokens}{100}
+\newcommand{\InputTariff}{0.000001}
+\newcommand{\OutputTariff}{0.000002}
+\newcommand{\PerTurnCost}{0.001200}
+\newcommand{\PublicSeed}{20261015}
+\newcommand{\LowRate}{8.8 [7.0, 10.8]}
+\newcommand{\HighRate}{91.3 [89.3, 93.3]}

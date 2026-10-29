@@ -1,0 +1,8 @@
+\begin{figure}[ht]\centering
+\begin{tikzpicture}\begin{axis}[xlabel={Simulated success propensity},ylabel={Assumed USD per success},legend pos=north east,scaled y ticks=false,y tick label style={/pgf/number format/fixed,/pgf/number format/precision=3},height=6cm]
+\addplot[okblue,mark=*,error bars/.cd,y dir=both,y explicit] table[x=p,y=cost,y error minus=clo,y error plus=chi,col sep=comma]{data/direct.generated.csv};
+\addplot[okorange,dashed,mark=triangle*,error bars/.cd,y dir=both,y explicit] table[x=p,y=cost,y error minus=clo,y error plus=chi,col sep=comma]{data/redundant.generated.csv};
+\legend{Simulated direct,Simulated redundant read}
+\end{axis}\end{tikzpicture}
+\caption{The simulated redundant control doubles assumed cost per success without changing task outcomes. Each point pools \SeedCount{} simulated seeds over \TaskCount{} fixed tasks. Bars use 95\% seed-cluster bootstrap intervals with \DrawCount{} draws. The tariff and token counts are artificial.}
+\label{fig:sweep}\end{figure}

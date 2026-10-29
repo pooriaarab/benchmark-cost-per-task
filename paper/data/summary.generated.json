@@ -1,0 +1,508 @@
+{
+  "baseline": [
+    {
+      "policy": "oracle",
+      "success": {
+        "value": 1,
+        "low": 0.8864866068260312,
+        "high": 0.9999999999999999,
+        "k": 30,
+        "n": 30
+      },
+      "verifiedSuccesses": 30,
+      "successRate": 1,
+      "meanTurns": 1,
+      "totalAttempts": 30,
+      "retries": 0,
+      "inputTokens": 30000,
+      "outputTokens": 3000,
+      "totalCostUsd": 0.036,
+      "costPerAttempt": 0.0012,
+      "costPerVerifiedSuccess": 0.0012,
+      "costSource": "estimated"
+    },
+    {
+      "policy": "empty",
+      "success": {
+        "value": 0,
+        "low": 0,
+        "high": 0.11351339317396876,
+        "k": 0,
+        "n": 30
+      },
+      "verifiedSuccesses": 0,
+      "successRate": 0,
+      "meanTurns": 1,
+      "totalAttempts": 30,
+      "retries": 0,
+      "inputTokens": 30000,
+      "outputTokens": 3000,
+      "totalCostUsd": 0.036,
+      "costPerAttempt": 0.0012,
+      "costPerVerifiedSuccess": null,
+      "costSource": "estimated"
+    },
+    {
+      "policy": "constant",
+      "success": {
+        "value": 0,
+        "low": 0,
+        "high": 0.11351339317396876,
+        "k": 0,
+        "n": 30
+      },
+      "verifiedSuccesses": 0,
+      "successRate": 0,
+      "meanTurns": 1,
+      "totalAttempts": 30,
+      "retries": 0,
+      "inputTokens": 30000,
+      "outputTokens": 3000,
+      "totalCostUsd": 0.036,
+      "costPerAttempt": 0.0012,
+      "costPerVerifiedSuccess": null,
+      "costSource": "estimated"
+    },
+    {
+      "policy": "echo",
+      "success": {
+        "value": 0,
+        "low": 0,
+        "high": 0.11351339317396876,
+        "k": 0,
+        "n": 30
+      },
+      "verifiedSuccesses": 0,
+      "successRate": 0,
+      "meanTurns": 1,
+      "totalAttempts": 30,
+      "retries": 0,
+      "inputTokens": 30000,
+      "outputTokens": 3000,
+      "totalCostUsd": 0.036,
+      "costPerAttempt": 0.0012,
+      "costPerVerifiedSuccess": null,
+      "costSource": "estimated"
+    },
+    {
+      "policy": "refusal",
+      "success": {
+        "value": 0,
+        "low": 0,
+        "high": 0.11351339317396876,
+        "k": 0,
+        "n": 30
+      },
+      "verifiedSuccesses": 0,
+      "successRate": 0,
+      "meanTurns": 1,
+      "totalAttempts": 30,
+      "retries": 0,
+      "inputTokens": 30000,
+      "outputTokens": 3000,
+      "totalCostUsd": 0.036,
+      "costPerAttempt": 0.0012,
+      "costPerVerifiedSuccess": null,
+      "costSource": "estimated"
+    },
+    {
+      "policy": "first-tool",
+      "success": {
+        "value": 0,
+        "low": 0,
+        "high": 0.11351339317396876,
+        "k": 0,
+        "n": 30
+      },
+      "verifiedSuccesses": 0,
+      "successRate": 0,
+      "meanTurns": 4,
+      "totalAttempts": 30,
+      "retries": 0,
+      "inputTokens": 120000,
+      "outputTokens": 12000,
+      "totalCostUsd": 0.144,
+      "costPerAttempt": 0.0048,
+      "costPerVerifiedSuccess": null,
+      "costSource": "estimated"
+    },
+    {
+      "policy": "finish-only",
+      "success": {
+        "value": 0,
+        "low": 0,
+        "high": 0.11351339317396876,
+        "k": 0,
+        "n": 30
+      },
+      "verifiedSuccesses": 0,
+      "successRate": 0,
+      "meanTurns": 1,
+      "totalAttempts": 30,
+      "retries": 0,
+      "inputTokens": 30000,
+      "outputTokens": 3000,
+      "totalCostUsd": 0.036,
+      "costPerAttempt": 0.0012,
+      "costPerVerifiedSuccess": null,
+      "costSource": "estimated"
+    }
+  ],
+  "sweep": [
+    {
+      "simulated": true,
+      "p": 0.1,
+      "control": "direct",
+      "successes": 53,
+      "n": 600,
+      "success": {
+        "value": 0.08833333333333333,
+        "low": 0.07,
+        "high": 0.10833333333333334,
+        "draws": 2000,
+        "seed": 20261029
+      },
+      "cost": {
+        "value": 0.01358490566037736,
+        "low": 0.011076923076923078,
+        "high": 0.017142857142857144,
+        "draws": 2000,
+        "seed": 20261029
+      },
+      "totalCostUsd": 0.7200000000000001
+    },
+    {
+      "simulated": true,
+      "p": 0.1,
+      "control": "redundant",
+      "successes": 53,
+      "n": 600,
+      "success": {
+        "value": 0.08833333333333333,
+        "low": 0.07,
+        "high": 0.10833333333333334,
+        "draws": 2000,
+        "seed": 20261029
+      },
+      "cost": {
+        "value": 0.02716981132075472,
+        "low": 0.022153846153846156,
+        "high": 0.03428571428571429,
+        "draws": 2000,
+        "seed": 20261029
+      },
+      "totalCostUsd": 1.4400000000000002
+    },
+    {
+      "simulated": true,
+      "p": 0.3,
+      "control": "direct",
+      "successes": 179,
+      "n": 600,
+      "success": {
+        "value": 0.29833333333333334,
+        "low": 0.26666666666666666,
+        "high": 0.32666666666666666,
+        "draws": 2000,
+        "seed": 20261029
+      },
+      "cost": {
+        "value": 0.004022346368715084,
+        "low": 0.0036734693877551023,
+        "high": 0.0045000000000000005,
+        "draws": 2000,
+        "seed": 20261029
+      },
+      "totalCostUsd": 0.7200000000000001
+    },
+    {
+      "simulated": true,
+      "p": 0.3,
+      "control": "redundant",
+      "successes": 179,
+      "n": 600,
+      "success": {
+        "value": 0.29833333333333334,
+        "low": 0.26666666666666666,
+        "high": 0.32666666666666666,
+        "draws": 2000,
+        "seed": 20261029
+      },
+      "cost": {
+        "value": 0.008044692737430168,
+        "low": 0.007346938775510205,
+        "high": 0.009000000000000001,
+        "draws": 2000,
+        "seed": 20261029
+      },
+      "totalCostUsd": 1.4400000000000002
+    },
+    {
+      "simulated": true,
+      "p": 0.5,
+      "control": "direct",
+      "successes": 317,
+      "n": 600,
+      "success": {
+        "value": 0.5283333333333333,
+        "low": 0.49166666666666664,
+        "high": 0.565,
+        "draws": 2000,
+        "seed": 20261029
+      },
+      "cost": {
+        "value": 0.002271293375394322,
+        "low": 0.0021238938053097347,
+        "high": 0.002440677966101695,
+        "draws": 2000,
+        "seed": 20261029
+      },
+      "totalCostUsd": 0.7200000000000001
+    },
+    {
+      "simulated": true,
+      "p": 0.5,
+      "control": "redundant",
+      "successes": 317,
+      "n": 600,
+      "success": {
+        "value": 0.5283333333333333,
+        "low": 0.49166666666666664,
+        "high": 0.565,
+        "draws": 2000,
+        "seed": 20261029
+      },
+      "cost": {
+        "value": 0.004542586750788644,
+        "low": 0.004247787610619469,
+        "high": 0.00488135593220339,
+        "draws": 2000,
+        "seed": 20261029
+      },
+      "totalCostUsd": 1.4400000000000002
+    },
+    {
+      "simulated": true,
+      "p": 0.7,
+      "control": "direct",
+      "successes": 426,
+      "n": 600,
+      "success": {
+        "value": 0.71,
+        "low": 0.6716666666666666,
+        "high": 0.7466666666666667,
+        "draws": 2000,
+        "seed": 20261029
+      },
+      "cost": {
+        "value": 0.0016901408450704226,
+        "low": 0.0016071428571428573,
+        "high": 0.0017910447761194032,
+        "draws": 2000,
+        "seed": 20261029
+      },
+      "totalCostUsd": 0.7200000000000001
+    },
+    {
+      "simulated": true,
+      "p": 0.7,
+      "control": "redundant",
+      "successes": 426,
+      "n": 600,
+      "success": {
+        "value": 0.71,
+        "low": 0.6716666666666666,
+        "high": 0.7466666666666667,
+        "draws": 2000,
+        "seed": 20261029
+      },
+      "cost": {
+        "value": 0.0033802816901408453,
+        "low": 0.0032142857142857147,
+        "high": 0.0035820895522388064,
+        "draws": 2000,
+        "seed": 20261029
+      },
+      "totalCostUsd": 1.4400000000000002
+    },
+    {
+      "simulated": true,
+      "p": 0.9,
+      "control": "direct",
+      "successes": 548,
+      "n": 600,
+      "success": {
+        "value": 0.9133333333333333,
+        "low": 0.8933333333333333,
+        "high": 0.9333333333333333,
+        "draws": 2000,
+        "seed": 20261029
+      },
+      "cost": {
+        "value": 0.0013138686131386862,
+        "low": 0.0012857142857142859,
+        "high": 0.0013432835820895524,
+        "draws": 2000,
+        "seed": 20261029
+      },
+      "totalCostUsd": 0.7200000000000001
+    },
+    {
+      "simulated": true,
+      "p": 0.9,
+      "control": "redundant",
+      "successes": 548,
+      "n": 600,
+      "success": {
+        "value": 0.9133333333333333,
+        "low": 0.8933333333333333,
+        "high": 0.9333333333333333,
+        "draws": 2000,
+        "seed": 20261029
+      },
+      "cost": {
+        "value": 0.0026277372262773725,
+        "low": 0.0025714285714285717,
+        "high": 0.0026865671641791047,
+        "draws": 2000,
+        "seed": 20261029
+      },
+      "totalCostUsd": 1.4400000000000002
+    }
+  ],
+  "contrasts": [
+    {
+      "p": 0.1,
+      "successDelta": {
+        "value": 0,
+        "low": 0,
+        "high": 0,
+        "draws": 2000,
+        "seed": 20261029
+      },
+      "extraCostPerTask": {
+        "value": 0.0011999999999999992,
+        "low": 0.0011999999999999992,
+        "high": 0.0011999999999999992,
+        "draws": 2000,
+        "seed": 20261029
+      }
+    },
+    {
+      "p": 0.3,
+      "successDelta": {
+        "value": 0,
+        "low": 0,
+        "high": 0,
+        "draws": 2000,
+        "seed": 20261029
+      },
+      "extraCostPerTask": {
+        "value": 0.0011999999999999992,
+        "low": 0.0011999999999999992,
+        "high": 0.0011999999999999992,
+        "draws": 2000,
+        "seed": 20261029
+      }
+    },
+    {
+      "p": 0.5,
+      "successDelta": {
+        "value": 0,
+        "low": 0,
+        "high": 0,
+        "draws": 2000,
+        "seed": 20261029
+      },
+      "extraCostPerTask": {
+        "value": 0.0011999999999999992,
+        "low": 0.0011999999999999992,
+        "high": 0.0011999999999999992,
+        "draws": 2000,
+        "seed": 20261029
+      }
+    },
+    {
+      "p": 0.7,
+      "successDelta": {
+        "value": 0,
+        "low": 0,
+        "high": 0,
+        "draws": 2000,
+        "seed": 20261029
+      },
+      "extraCostPerTask": {
+        "value": 0.0011999999999999992,
+        "low": 0.0011999999999999992,
+        "high": 0.0011999999999999992,
+        "draws": 2000,
+        "seed": 20261029
+      }
+    },
+    {
+      "p": 0.9,
+      "successDelta": {
+        "value": 0,
+        "low": 0,
+        "high": 0,
+        "draws": 2000,
+        "seed": 20261029
+      },
+      "extraCostPerTask": {
+        "value": 0.0011999999999999992,
+        "low": 0.0011999999999999992,
+        "high": 0.0011999999999999992,
+        "draws": 2000,
+        "seed": 20261029
+      }
+    }
+  ],
+  "probes": [
+    {
+      "kind": "no-finish",
+      "success": {
+        "value": 0,
+        "low": 0,
+        "high": 0.11351339317396876,
+        "k": 0,
+        "n": 30
+      }
+    },
+    {
+      "kind": "extra-file",
+      "success": {
+        "value": 0,
+        "low": 0,
+        "high": 0.11351339317396876,
+        "k": 0,
+        "n": 30
+      }
+    },
+    {
+      "kind": "forged-state",
+      "success": {
+        "value": 0,
+        "low": 0,
+        "high": 0.11351339317396876,
+        "k": 0,
+        "n": 30
+      }
+    }
+  ],
+  "coverage": [
+    {
+      "category": "table-arithmetic",
+      "n": 10
+    },
+    {
+      "category": "crm-update",
+      "n": 10
+    },
+    {
+      "category": "file-edit",
+      "n": 10
+    }
+  ],
+  "freeModels": "Not configured or probed; no hosted inference",
+  "actualProviderSpendUsd": 0
+}

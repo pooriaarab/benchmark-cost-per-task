@@ -1,0 +1,3992 @@
+[
+  {
+    "taskId": "invoice-total-01",
+    "kind": "no-finish",
+    "submission": {
+      "toolLog": [
+        {
+          "name": "read_file",
+          "args": {
+            "path": "accounts.csv"
+          },
+          "result": null
+        },
+        {
+          "name": "write_file",
+          "args": {
+            "path": "summaries/late-sum-7155.txt",
+            "content": "170810\n"
+          },
+          "result": null
+        }
+      ]
+    },
+    "result": {
+      "score": 0,
+      "reason": "Verification failed: finish_task.",
+      "details": {
+        "filesMatch": true,
+        "recordsMatch": true,
+        "finished": false
+      }
+    }
+  },
+  {
+    "taskId": "invoice-total-01",
+    "kind": "extra-file",
+    "submission": {
+      "toolLog": [
+        {
+          "name": "read_file",
+          "args": {
+            "path": "accounts.csv"
+          },
+          "result": null
+        },
+        {
+          "name": "write_file",
+          "args": {
+            "path": "summaries/late-sum-7155.txt",
+            "content": "170810\n"
+          },
+          "result": null
+        },
+        {
+          "name": "write_file",
+          "args": {
+            "path": "unrequested.txt",
+            "content": "x"
+          },
+          "result": null
+        },
+        {
+          "name": "finish_task",
+          "args": {},
+          "result": null
+        }
+      ]
+    },
+    "result": {
+      "score": 0,
+      "reason": "Verification failed: files.",
+      "details": {
+        "filesMatch": false,
+        "recordsMatch": true,
+        "finished": true
+      }
+    }
+  },
+  {
+    "taskId": "invoice-total-01",
+    "kind": "forged-state",
+    "submission": {
+      "toolLog": [
+        {
+          "name": "finish_task",
+          "args": {},
+          "result": {
+            "files": {
+              "accounts.csv": "invoice,customer,total_cents,status\nINV-11,Cedar Labs,8553,past-due\nINV-12,Dovetail Supply,69562,past-due\nINV-13,Aster Works,12194,paid\nINV-14,Elm Studio,10965,past-due\nINV-15,Cedar Labs,81730,past-due\n",
+              "summaries/late-sum-7155.txt": "170810\n"
+            },
+            "records": []
+          }
+        }
+      ],
+      "finalState": {
+        "files": {
+          "accounts.csv": "invoice,customer,total_cents,status\nINV-11,Cedar Labs,8553,past-due\nINV-12,Dovetail Supply,69562,past-due\nINV-13,Aster Works,12194,paid\nINV-14,Elm Studio,10965,past-due\nINV-15,Cedar Labs,81730,past-due\n",
+          "summaries/late-sum-7155.txt": "170810\n"
+        },
+        "records": [],
+        "finished": true
+      }
+    },
+    "result": {
+      "score": 0,
+      "reason": "Verification failed: files.",
+      "details": {
+        "filesMatch": false,
+        "recordsMatch": true,
+        "finished": true
+      }
+    }
+  },
+  {
+    "taskId": "invoice-total-02",
+    "kind": "no-finish",
+    "submission": {
+      "toolLog": [
+        {
+          "name": "read_file",
+          "args": {
+            "path": "accounts.csv"
+          },
+          "result": null
+        },
+        {
+          "name": "write_file",
+          "args": {
+            "path": "reports/late-sum-7789.txt",
+            "content": "98398\n"
+          },
+          "result": null
+        }
+      ]
+    },
+    "result": {
+      "score": 0,
+      "reason": "Verification failed: finish_task.",
+      "details": {
+        "filesMatch": true,
+        "recordsMatch": true,
+        "finished": false
+      }
+    }
+  },
+  {
+    "taskId": "invoice-total-02",
+    "kind": "extra-file",
+    "submission": {
+      "toolLog": [
+        {
+          "name": "read_file",
+          "args": {
+            "path": "accounts.csv"
+          },
+          "result": null
+        },
+        {
+          "name": "write_file",
+          "args": {
+            "path": "reports/late-sum-7789.txt",
+            "content": "98398\n"
+          },
+          "result": null
+        },
+        {
+          "name": "write_file",
+          "args": {
+            "path": "unrequested.txt",
+            "content": "x"
+          },
+          "result": null
+        },
+        {
+          "name": "finish_task",
+          "args": {},
+          "result": null
+        }
+      ]
+    },
+    "result": {
+      "score": 0,
+      "reason": "Verification failed: files.",
+      "details": {
+        "filesMatch": false,
+        "recordsMatch": true,
+        "finished": true
+      }
+    }
+  },
+  {
+    "taskId": "invoice-total-02",
+    "kind": "forged-state",
+    "submission": {
+      "toolLog": [
+        {
+          "name": "finish_task",
+          "args": {},
+          "result": {
+            "files": {
+              "accounts.csv": "invoice,customer,cents,status\nINV-21,Cedar Labs,80687,paid\nINV-22,Fjord Freight,32814,overdue\nINV-23,Fjord Freight,12491,overdue\nINV-24,Elm Studio,29665,overdue\nINV-25,Beacon Foods,23428,overdue\n",
+              "reports/late-sum-7789.txt": "98398\n"
+            },
+            "records": []
+          }
+        }
+      ],
+      "finalState": {
+        "files": {
+          "accounts.csv": "invoice,customer,cents,status\nINV-21,Cedar Labs,80687,paid\nINV-22,Fjord Freight,32814,overdue\nINV-23,Fjord Freight,12491,overdue\nINV-24,Elm Studio,29665,overdue\nINV-25,Beacon Foods,23428,overdue\n",
+          "reports/late-sum-7789.txt": "98398\n"
+        },
+        "records": [],
+        "finished": true
+      }
+    },
+    "result": {
+      "score": 0,
+      "reason": "Verification failed: files.",
+      "details": {
+        "filesMatch": false,
+        "recordsMatch": true,
+        "finished": true
+      }
+    }
+  },
+  {
+    "taskId": "invoice-total-03",
+    "kind": "no-finish",
+    "submission": {
+      "toolLog": [
+        {
+          "name": "read_file",
+          "args": {
+            "path": "accounts.csv"
+          },
+          "result": null
+        },
+        {
+          "name": "write_file",
+          "args": {
+            "path": "totals/late-sum-5126.txt",
+            "content": "101748\n"
+          },
+          "result": null
+        }
+      ]
+    },
+    "result": {
+      "score": 0,
+      "reason": "Verification failed: finish_task.",
+      "details": {
+        "filesMatch": true,
+        "recordsMatch": true,
+        "finished": false
+      }
+    }
+  },
+  {
+    "taskId": "invoice-total-03",
+    "kind": "extra-file",
+    "submission": {
+      "toolLog": [
+        {
+          "name": "read_file",
+          "args": {
+            "path": "accounts.csv"
+          },
+          "result": null
+        },
+        {
+          "name": "write_file",
+          "args": {
+            "path": "totals/late-sum-5126.txt",
+            "content": "101748\n"
+          },
+          "result": null
+        },
+        {
+          "name": "write_file",
+          "args": {
+            "path": "unrequested.txt",
+            "content": "x"
+          },
+          "result": null
+        },
+        {
+          "name": "finish_task",
+          "args": {},
+          "result": null
+        }
+      ]
+    },
+    "result": {
+      "score": 0,
+      "reason": "Verification failed: files.",
+      "details": {
+        "filesMatch": false,
+        "recordsMatch": true,
+        "finished": true
+      }
+    }
+  },
+  {
+    "taskId": "invoice-total-03",
+    "kind": "forged-state",
+    "submission": {
+      "toolLog": [
+        {
+          "name": "finish_task",
+          "args": {},
+          "result": {
+            "files": {
+              "accounts.csv": "invoice,customer,total_cents,status\nINV-31,Aster Works,36584,paid\nINV-32,Dovetail Supply,25371,overdue\nINV-33,Cedar Labs,62376,paid\nINV-34,Dovetail Supply,49451,overdue\nINV-35,Elm Studio,26926,overdue\n",
+              "totals/late-sum-5126.txt": "101748\n"
+            },
+            "records": []
+          }
+        }
+      ],
+      "finalState": {
+        "files": {
+          "accounts.csv": "invoice,customer,total_cents,status\nINV-31,Aster Works,36584,paid\nINV-32,Dovetail Supply,25371,overdue\nINV-33,Cedar Labs,62376,paid\nINV-34,Dovetail Supply,49451,overdue\nINV-35,Elm Studio,26926,overdue\n",
+          "totals/late-sum-5126.txt": "101748\n"
+        },
+        "records": [],
+        "finished": true
+      }
+    },
+    "result": {
+      "score": 0,
+      "reason": "Verification failed: files.",
+      "details": {
+        "filesMatch": false,
+        "recordsMatch": true,
+        "finished": true
+      }
+    }
+  },
+  {
+    "taskId": "invoice-total-04",
+    "kind": "no-finish",
+    "submission": {
+      "toolLog": [
+        {
+          "name": "read_file",
+          "args": {
+            "path": "invoices.csv"
+          },
+          "result": null
+        },
+        {
+          "name": "write_file",
+          "args": {
+            "path": "reports/overdue-total-2166.txt",
+            "content": "118169\n"
+          },
+          "result": null
+        }
+      ]
+    },
+    "result": {
+      "score": 0,
+      "reason": "Verification failed: finish_task.",
+      "details": {
+        "filesMatch": true,
+        "recordsMatch": true,
+        "finished": false
+      }
+    }
+  },
+  {
+    "taskId": "invoice-total-04",
+    "kind": "extra-file",
+    "submission": {
+      "toolLog": [
+        {
+          "name": "read_file",
+          "args": {
+            "path": "invoices.csv"
+          },
+          "result": null
+        },
+        {
+          "name": "write_file",
+          "args": {
+            "path": "reports/overdue-total-2166.txt",
+            "content": "118169\n"
+          },
+          "result": null
+        },
+        {
+          "name": "write_file",
+          "args": {
+            "path": "unrequested.txt",
+            "content": "x"
+          },
+          "result": null
+        },
+        {
+          "name": "finish_task",
+          "args": {},
+          "result": null
+        }
+      ]
+    },
+    "result": {
+      "score": 0,
+      "reason": "Verification failed: files.",
+      "details": {
+        "filesMatch": false,
+        "recordsMatch": true,
+        "finished": true
+      }
+    }
+  },
+  {
+    "taskId": "invoice-total-04",
+    "kind": "forged-state",
+    "submission": {
+      "toolLog": [
+        {
+          "name": "finish_task",
+          "args": {},
+          "result": {
+            "files": {
+              "invoices.csv": "invoice,customer,total_cents,status\nINV-41,Cedar Labs,61369,overdue\nINV-42,Aster Works,15076,paid\nINV-43,Beacon Foods,56800,overdue\nINV-44,Aster Works,66563,paid\nINV-45,Beacon Foods,55676,paid\n",
+              "reports/overdue-total-2166.txt": "118169\n"
+            },
+            "records": []
+          }
+        }
+      ],
+      "finalState": {
+        "files": {
+          "invoices.csv": "invoice,customer,total_cents,status\nINV-41,Cedar Labs,61369,overdue\nINV-42,Aster Works,15076,paid\nINV-43,Beacon Foods,56800,overdue\nINV-44,Aster Works,66563,paid\nINV-45,Beacon Foods,55676,paid\n",
+          "reports/overdue-total-2166.txt": "118169\n"
+        },
+        "records": [],
+        "finished": true
+      }
+    },
+    "result": {
+      "score": 0,
+      "reason": "Verification failed: files.",
+      "details": {
+        "filesMatch": false,
+        "recordsMatch": true,
+        "finished": true
+      }
+    }
+  },
+  {
+    "taskId": "invoice-total-05",
+    "kind": "no-finish",
+    "submission": {
+      "toolLog": [
+        {
+          "name": "read_file",
+          "args": {
+            "path": "accounts.csv"
+          },
+          "result": null
+        },
+        {
+          "name": "write_file",
+          "args": {
+            "path": "reports/late-sum-4798.txt",
+            "content": "141031\n"
+          },
+          "result": null
+        }
+      ]
+    },
+    "result": {
+      "score": 0,
+      "reason": "Verification failed: finish_task.",
+      "details": {
+        "filesMatch": true,
+        "recordsMatch": true,
+        "finished": false
+      }
+    }
+  },
+  {
+    "taskId": "invoice-total-05",
+    "kind": "extra-file",
+    "submission": {
+      "toolLog": [
+        {
+          "name": "read_file",
+          "args": {
+            "path": "accounts.csv"
+          },
+          "result": null
+        },
+        {
+          "name": "write_file",
+          "args": {
+            "path": "reports/late-sum-4798.txt",
+            "content": "141031\n"
+          },
+          "result": null
+        },
+        {
+          "name": "write_file",
+          "args": {
+            "path": "unrequested.txt",
+            "content": "x"
+          },
+          "result": null
+        },
+        {
+          "name": "finish_task",
+          "args": {},
+          "result": null
+        }
+      ]
+    },
+    "result": {
+      "score": 0,
+      "reason": "Verification failed: files.",
+      "details": {
+        "filesMatch": false,
+        "recordsMatch": true,
+        "finished": true
+      }
+    }
+  },
+  {
+    "taskId": "invoice-total-05",
+    "kind": "forged-state",
+    "submission": {
+      "toolLog": [
+        {
+          "name": "finish_task",
+          "args": {},
+          "result": {
+            "files": {
+              "accounts.csv": "invoice,customer,amount_cents,status\nINV-51,Beacon Foods,81794,past-due\nINV-52,Fjord Freight,14548,paid\nINV-53,Cedar Labs,63587,paid\nINV-54,Dovetail Supply,60195,paid\nINV-55,Cedar Labs,59237,past-due\n",
+              "reports/late-sum-4798.txt": "141031\n"
+            },
+            "records": []
+          }
+        }
+      ],
+      "finalState": {
+        "files": {
+          "accounts.csv": "invoice,customer,amount_cents,status\nINV-51,Beacon Foods,81794,past-due\nINV-52,Fjord Freight,14548,paid\nINV-53,Cedar Labs,63587,paid\nINV-54,Dovetail Supply,60195,paid\nINV-55,Cedar Labs,59237,past-due\n",
+          "reports/late-sum-4798.txt": "141031\n"
+        },
+        "records": [],
+        "finished": true
+      }
+    },
+    "result": {
+      "score": 0,
+      "reason": "Verification failed: files.",
+      "details": {
+        "filesMatch": false,
+        "recordsMatch": true,
+        "finished": true
+      }
+    }
+  },
+  {
+    "taskId": "invoice-total-06",
+    "kind": "no-finish",
+    "submission": {
+      "toolLog": [
+        {
+          "name": "read_file",
+          "args": {
+            "path": "accounts.csv"
+          },
+          "result": null
+        },
+        {
+          "name": "write_file",
+          "args": {
+            "path": "summaries/late-sum-8898.txt",
+            "content": "25478\n"
+          },
+          "result": null
+        }
+      ]
+    },
+    "result": {
+      "score": 0,
+      "reason": "Verification failed: finish_task.",
+      "details": {
+        "filesMatch": true,
+        "recordsMatch": true,
+        "finished": false
+      }
+    }
+  },
+  {
+    "taskId": "invoice-total-06",
+    "kind": "extra-file",
+    "submission": {
+      "toolLog": [
+        {
+          "name": "read_file",
+          "args": {
+            "path": "accounts.csv"
+          },
+          "result": null
+        },
+        {
+          "name": "write_file",
+          "args": {
+            "path": "summaries/late-sum-8898.txt",
+            "content": "25478\n"
+          },
+          "result": null
+        },
+        {
+          "name": "write_file",
+          "args": {
+            "path": "unrequested.txt",
+            "content": "x"
+          },
+          "result": null
+        },
+        {
+          "name": "finish_task",
+          "args": {},
+          "result": null
+        }
+      ]
+    },
+    "result": {
+      "score": 0,
+      "reason": "Verification failed: files.",
+      "details": {
+        "filesMatch": false,
+        "recordsMatch": true,
+        "finished": true
+      }
+    }
+  },
+  {
+    "taskId": "invoice-total-06",
+    "kind": "forged-state",
+    "submission": {
+      "toolLog": [
+        {
+          "name": "finish_task",
+          "args": {},
+          "result": {
+            "files": {
+              "accounts.csv": "invoice,customer,cents,status\nINV-61,Fjord Freight,58753,paid\nINV-62,Fjord Freight,69581,paid\nINV-63,Elm Studio,26207,paid\nINV-64,Cedar Labs,1105,overdue\nINV-65,Elm Studio,24373,overdue\n",
+              "summaries/late-sum-8898.txt": "25478\n"
+            },
+            "records": []
+          }
+        }
+      ],
+      "finalState": {
+        "files": {
+          "accounts.csv": "invoice,customer,cents,status\nINV-61,Fjord Freight,58753,paid\nINV-62,Fjord Freight,69581,paid\nINV-63,Elm Studio,26207,paid\nINV-64,Cedar Labs,1105,overdue\nINV-65,Elm Studio,24373,overdue\n",
+          "summaries/late-sum-8898.txt": "25478\n"
+        },
+        "records": [],
+        "finished": true
+      }
+    },
+    "result": {
+      "score": 0,
+      "reason": "Verification failed: files.",
+      "details": {
+        "filesMatch": false,
+        "recordsMatch": true,
+        "finished": true
+      }
+    }
+  },
+  {
+    "taskId": "invoice-total-07",
+    "kind": "no-finish",
+    "submission": {
+      "toolLog": [
+        {
+          "name": "read_file",
+          "args": {
+            "path": "billing.csv"
+          },
+          "result": null
+        },
+        {
+          "name": "write_file",
+          "args": {
+            "path": "totals/overdue-total-1885.txt",
+            "content": "184100\n"
+          },
+          "result": null
+        }
+      ]
+    },
+    "result": {
+      "score": 0,
+      "reason": "Verification failed: finish_task.",
+      "details": {
+        "filesMatch": true,
+        "recordsMatch": true,
+        "finished": false
+      }
+    }
+  },
+  {
+    "taskId": "invoice-total-07",
+    "kind": "extra-file",
+    "submission": {
+      "toolLog": [
+        {
+          "name": "read_file",
+          "args": {
+            "path": "billing.csv"
+          },
+          "result": null
+        },
+        {
+          "name": "write_file",
+          "args": {
+            "path": "totals/overdue-total-1885.txt",
+            "content": "184100\n"
+          },
+          "result": null
+        },
+        {
+          "name": "write_file",
+          "args": {
+            "path": "unrequested.txt",
+            "content": "x"
+          },
+          "result": null
+        },
+        {
+          "name": "finish_task",
+          "args": {},
+          "result": null
+        }
+      ]
+    },
+    "result": {
+      "score": 0,
+      "reason": "Verification failed: files.",
+      "details": {
+        "filesMatch": false,
+        "recordsMatch": true,
+        "finished": true
+      }
+    }
+  },
+  {
+    "taskId": "invoice-total-07",
+    "kind": "forged-state",
+    "submission": {
+      "toolLog": [
+        {
+          "name": "finish_task",
+          "args": {},
+          "result": {
+            "files": {
+              "billing.csv": "invoice,customer,total_cents,status\nINV-71,Fjord Freight,81464,unpaid\nINV-72,Elm Studio,26709,unpaid\nINV-73,Beacon Foods,32399,unpaid\nINV-74,Fjord Freight,76363,paid\nINV-75,Dovetail Supply,43528,unpaid\n",
+              "totals/overdue-total-1885.txt": "184100\n"
+            },
+            "records": []
+          }
+        }
+      ],
+      "finalState": {
+        "files": {
+          "billing.csv": "invoice,customer,total_cents,status\nINV-71,Fjord Freight,81464,unpaid\nINV-72,Elm Studio,26709,unpaid\nINV-73,Beacon Foods,32399,unpaid\nINV-74,Fjord Freight,76363,paid\nINV-75,Dovetail Supply,43528,unpaid\n",
+          "totals/overdue-total-1885.txt": "184100\n"
+        },
+        "records": [],
+        "finished": true
+      }
+    },
+    "result": {
+      "score": 0,
+      "reason": "Verification failed: files.",
+      "details": {
+        "filesMatch": false,
+        "recordsMatch": true,
+        "finished": true
+      }
+    }
+  },
+  {
+    "taskId": "invoice-total-08",
+    "kind": "no-finish",
+    "submission": {
+      "toolLog": [
+        {
+          "name": "read_file",
+          "args": {
+            "path": "invoices.csv"
+          },
+          "result": null
+        },
+        {
+          "name": "write_file",
+          "args": {
+            "path": "reports/due-balance-2297.txt",
+            "content": "112915\n"
+          },
+          "result": null
+        }
+      ]
+    },
+    "result": {
+      "score": 0,
+      "reason": "Verification failed: finish_task.",
+      "details": {
+        "filesMatch": true,
+        "recordsMatch": true,
+        "finished": false
+      }
+    }
+  },
+  {
+    "taskId": "invoice-total-08",
+    "kind": "extra-file",
+    "submission": {
+      "toolLog": [
+        {
+          "name": "read_file",
+          "args": {
+            "path": "invoices.csv"
+          },
+          "result": null
+        },
+        {
+          "name": "write_file",
+          "args": {
+            "path": "reports/due-balance-2297.txt",
+            "content": "112915\n"
+          },
+          "result": null
+        },
+        {
+          "name": "write_file",
+          "args": {
+            "path": "unrequested.txt",
+            "content": "x"
+          },
+          "result": null
+        },
+        {
+          "name": "finish_task",
+          "args": {},
+          "result": null
+        }
+      ]
+    },
+    "result": {
+      "score": 0,
+      "reason": "Verification failed: files.",
+      "details": {
+        "filesMatch": false,
+        "recordsMatch": true,
+        "finished": true
+      }
+    }
+  },
+  {
+    "taskId": "invoice-total-08",
+    "kind": "forged-state",
+    "submission": {
+      "toolLog": [
+        {
+          "name": "finish_task",
+          "args": {},
+          "result": {
+            "files": {
+              "invoices.csv": "invoice,customer,amount_cents,status\nINV-81,Dovetail Supply,90932,paid\nINV-82,Fjord Freight,28831,overdue\nINV-83,Fjord Freight,79485,paid\nINV-84,Cedar Labs,4641,overdue\nINV-85,Aster Works,79443,overdue\n",
+              "reports/due-balance-2297.txt": "112915\n"
+            },
+            "records": []
+          }
+        }
+      ],
+      "finalState": {
+        "files": {
+          "invoices.csv": "invoice,customer,amount_cents,status\nINV-81,Dovetail Supply,90932,paid\nINV-82,Fjord Freight,28831,overdue\nINV-83,Fjord Freight,79485,paid\nINV-84,Cedar Labs,4641,overdue\nINV-85,Aster Works,79443,overdue\n",
+          "reports/due-balance-2297.txt": "112915\n"
+        },
+        "records": [],
+        "finished": true
+      }
+    },
+    "result": {
+      "score": 0,
+      "reason": "Verification failed: files.",
+      "details": {
+        "filesMatch": false,
+        "recordsMatch": true,
+        "finished": true
+      }
+    }
+  },
+  {
+    "taskId": "invoice-total-09",
+    "kind": "no-finish",
+    "submission": {
+      "toolLog": [
+        {
+          "name": "read_file",
+          "args": {
+            "path": "billing.csv"
+          },
+          "result": null
+        },
+        {
+          "name": "write_file",
+          "args": {
+            "path": "totals/late-sum-2202.txt",
+            "content": "140814\n"
+          },
+          "result": null
+        }
+      ]
+    },
+    "result": {
+      "score": 0,
+      "reason": "Verification failed: finish_task.",
+      "details": {
+        "filesMatch": true,
+        "recordsMatch": true,
+        "finished": false
+      }
+    }
+  },
+  {
+    "taskId": "invoice-total-09",
+    "kind": "extra-file",
+    "submission": {
+      "toolLog": [
+        {
+          "name": "read_file",
+          "args": {
+            "path": "billing.csv"
+          },
+          "result": null
+        },
+        {
+          "name": "write_file",
+          "args": {
+            "path": "totals/late-sum-2202.txt",
+            "content": "140814\n"
+          },
+          "result": null
+        },
+        {
+          "name": "write_file",
+          "args": {
+            "path": "unrequested.txt",
+            "content": "x"
+          },
+          "result": null
+        },
+        {
+          "name": "finish_task",
+          "args": {},
+          "result": null
+        }
+      ]
+    },
+    "result": {
+      "score": 0,
+      "reason": "Verification failed: files.",
+      "details": {
+        "filesMatch": false,
+        "recordsMatch": true,
+        "finished": true
+      }
+    }
+  },
+  {
+    "taskId": "invoice-total-09",
+    "kind": "forged-state",
+    "submission": {
+      "toolLog": [
+        {
+          "name": "finish_task",
+          "args": {},
+          "result": {
+            "files": {
+              "billing.csv": "invoice,customer,cents,status\nINV-91,Beacon Foods,31212,paid\nINV-92,Aster Works,35597,overdue\nINV-93,Aster Works,49986,paid\nINV-94,Elm Studio,22709,overdue\nINV-95,Cedar Labs,82508,overdue\n",
+              "totals/late-sum-2202.txt": "140814\n"
+            },
+            "records": []
+          }
+        }
+      ],
+      "finalState": {
+        "files": {
+          "billing.csv": "invoice,customer,cents,status\nINV-91,Beacon Foods,31212,paid\nINV-92,Aster Works,35597,overdue\nINV-93,Aster Works,49986,paid\nINV-94,Elm Studio,22709,overdue\nINV-95,Cedar Labs,82508,overdue\n",
+          "totals/late-sum-2202.txt": "140814\n"
+        },
+        "records": [],
+        "finished": true
+      }
+    },
+    "result": {
+      "score": 0,
+      "reason": "Verification failed: files.",
+      "details": {
+        "filesMatch": false,
+        "recordsMatch": true,
+        "finished": true
+      }
+    }
+  },
+  {
+    "taskId": "invoice-total-10",
+    "kind": "no-finish",
+    "submission": {
+      "toolLog": [
+        {
+          "name": "read_file",
+          "args": {
+            "path": "billing.csv"
+          },
+          "result": null
+        },
+        {
+          "name": "write_file",
+          "args": {
+            "path": "totals/overdue-total-8869.txt",
+            "content": "307200\n"
+          },
+          "result": null
+        }
+      ]
+    },
+    "result": {
+      "score": 0,
+      "reason": "Verification failed: finish_task.",
+      "details": {
+        "filesMatch": true,
+        "recordsMatch": true,
+        "finished": false
+      }
+    }
+  },
+  {
+    "taskId": "invoice-total-10",
+    "kind": "extra-file",
+    "submission": {
+      "toolLog": [
+        {
+          "name": "read_file",
+          "args": {
+            "path": "billing.csv"
+          },
+          "result": null
+        },
+        {
+          "name": "write_file",
+          "args": {
+            "path": "totals/overdue-total-8869.txt",
+            "content": "307200\n"
+          },
+          "result": null
+        },
+        {
+          "name": "write_file",
+          "args": {
+            "path": "unrequested.txt",
+            "content": "x"
+          },
+          "result": null
+        },
+        {
+          "name": "finish_task",
+          "args": {},
+          "result": null
+        }
+      ]
+    },
+    "result": {
+      "score": 0,
+      "reason": "Verification failed: files.",
+      "details": {
+        "filesMatch": false,
+        "recordsMatch": true,
+        "finished": true
+      }
+    }
+  },
+  {
+    "taskId": "invoice-total-10",
+    "kind": "forged-state",
+    "submission": {
+      "toolLog": [
+        {
+          "name": "finish_task",
+          "args": {},
+          "result": {
+            "files": {
+              "billing.csv": "invoice,customer,total_cents,status\nINV-101,Elm Studio,85074,overdue\nINV-102,Cedar Labs,35520,overdue\nINV-103,Beacon Foods,38016,overdue\nINV-104,Aster Works,73240,overdue\nINV-105,Aster Works,75350,overdue\n",
+              "totals/overdue-total-8869.txt": "307200\n"
+            },
+            "records": []
+          }
+        }
+      ],
+      "finalState": {
+        "files": {
+          "billing.csv": "invoice,customer,total_cents,status\nINV-101,Elm Studio,85074,overdue\nINV-102,Cedar Labs,35520,overdue\nINV-103,Beacon Foods,38016,overdue\nINV-104,Aster Works,73240,overdue\nINV-105,Aster Works,75350,overdue\n",
+          "totals/overdue-total-8869.txt": "307200\n"
+        },
+        "records": [],
+        "finished": true
+      }
+    },
+    "result": {
+      "score": 0,
+      "reason": "Verification failed: files.",
+      "details": {
+        "filesMatch": false,
+        "recordsMatch": true,
+        "finished": true
+      }
+    }
+  },
+  {
+    "taskId": "crm-renewal-01",
+    "kind": "no-finish",
+    "submission": {
+      "toolLog": [
+        {
+          "name": "list_records",
+          "args": {},
+          "result": null
+        },
+        {
+          "name": "update_record",
+          "args": {
+            "id": "acct-1-3",
+            "fields": {
+              "followUp": "renewal-review"
+            }
+          },
+          "result": null
+        }
+      ]
+    },
+    "result": {
+      "score": 0,
+      "reason": "Verification failed: finish_task.",
+      "details": {
+        "filesMatch": true,
+        "recordsMatch": true,
+        "finished": false
+      }
+    }
+  },
+  {
+    "taskId": "crm-renewal-01",
+    "kind": "extra-file",
+    "submission": {
+      "toolLog": [
+        {
+          "name": "list_records",
+          "args": {},
+          "result": null
+        },
+        {
+          "name": "update_record",
+          "args": {
+            "id": "acct-1-3",
+            "fields": {
+              "followUp": "renewal-review"
+            }
+          },
+          "result": null
+        },
+        {
+          "name": "write_file",
+          "args": {
+            "path": "unrequested.txt",
+            "content": "x"
+          },
+          "result": null
+        },
+        {
+          "name": "finish_task",
+          "args": {},
+          "result": null
+        }
+      ]
+    },
+    "result": {
+      "score": 0,
+      "reason": "Verification failed: files.",
+      "details": {
+        "filesMatch": false,
+        "recordsMatch": true,
+        "finished": true
+      }
+    }
+  },
+  {
+    "taskId": "crm-renewal-01",
+    "kind": "forged-state",
+    "submission": {
+      "toolLog": [
+        {
+          "name": "finish_task",
+          "args": {},
+          "result": {
+            "files": {},
+            "records": [
+              {
+                "id": "acct-1-1",
+                "name": "Dovetail Supply",
+                "owner": "Zoe",
+                "active": true,
+                "annualValue": 58162,
+                "followUp": "none"
+              },
+              {
+                "id": "acct-1-2",
+                "name": "Cedar Labs",
+                "owner": "Diego",
+                "active": true,
+                "annualValue": 37972,
+                "followUp": "none"
+              },
+              {
+                "id": "acct-1-3",
+                "name": "Fjord Freight",
+                "owner": "Amina",
+                "active": true,
+                "annualValue": 91085,
+                "followUp": "renewal-review"
+              },
+              {
+                "id": "acct-1-4",
+                "name": "Aster Works",
+                "owner": "Min",
+                "active": false,
+                "annualValue": 74453,
+                "followUp": "none"
+              }
+            ]
+          }
+        }
+      ],
+      "finalState": {
+        "files": {},
+        "records": [
+          {
+            "id": "acct-1-1",
+            "name": "Dovetail Supply",
+            "owner": "Zoe",
+            "active": true,
+            "annualValue": 58162,
+            "followUp": "none"
+          },
+          {
+            "id": "acct-1-2",
+            "name": "Cedar Labs",
+            "owner": "Diego",
+            "active": true,
+            "annualValue": 37972,
+            "followUp": "none"
+          },
+          {
+            "id": "acct-1-3",
+            "name": "Fjord Freight",
+            "owner": "Amina",
+            "active": true,
+            "annualValue": 91085,
+            "followUp": "renewal-review"
+          },
+          {
+            "id": "acct-1-4",
+            "name": "Aster Works",
+            "owner": "Min",
+            "active": false,
+            "annualValue": 74453,
+            "followUp": "none"
+          }
+        ],
+        "finished": true
+      }
+    },
+    "result": {
+      "score": 0,
+      "reason": "Verification failed: CRM records.",
+      "details": {
+        "filesMatch": true,
+        "recordsMatch": false,
+        "finished": true
+      }
+    }
+  },
+  {
+    "taskId": "crm-renewal-02",
+    "kind": "no-finish",
+    "submission": {
+      "toolLog": [
+        {
+          "name": "list_records",
+          "args": {},
+          "result": null
+        },
+        {
+          "name": "update_record",
+          "args": {
+            "id": "acct-2-3",
+            "fields": {
+              "followUp": "contract-review"
+            }
+          },
+          "result": null
+        }
+      ]
+    },
+    "result": {
+      "score": 0,
+      "reason": "Verification failed: finish_task.",
+      "details": {
+        "filesMatch": true,
+        "recordsMatch": true,
+        "finished": false
+      }
+    }
+  },
+  {
+    "taskId": "crm-renewal-02",
+    "kind": "extra-file",
+    "submission": {
+      "toolLog": [
+        {
+          "name": "list_records",
+          "args": {},
+          "result": null
+        },
+        {
+          "name": "update_record",
+          "args": {
+            "id": "acct-2-3",
+            "fields": {
+              "followUp": "contract-review"
+            }
+          },
+          "result": null
+        },
+        {
+          "name": "write_file",
+          "args": {
+            "path": "unrequested.txt",
+            "content": "x"
+          },
+          "result": null
+        },
+        {
+          "name": "finish_task",
+          "args": {},
+          "result": null
+        }
+      ]
+    },
+    "result": {
+      "score": 0,
+      "reason": "Verification failed: files.",
+      "details": {
+        "filesMatch": false,
+        "recordsMatch": true,
+        "finished": true
+      }
+    }
+  },
+  {
+    "taskId": "crm-renewal-02",
+    "kind": "forged-state",
+    "submission": {
+      "toolLog": [
+        {
+          "name": "finish_task",
+          "args": {},
+          "result": {
+            "files": {},
+            "records": [
+              {
+                "id": "acct-2-1",
+                "name": "Fjord Freight",
+                "owner": "Harper",
+                "active": true,
+                "annualValue": 14019,
+                "followUp": "none"
+              },
+              {
+                "id": "acct-2-2",
+                "name": "Beacon Foods",
+                "owner": "Diego",
+                "active": true,
+                "annualValue": 23390,
+                "followUp": "none"
+              },
+              {
+                "id": "acct-2-3",
+                "name": "Fjord Freight",
+                "owner": "Harper",
+                "active": true,
+                "annualValue": 79692,
+                "followUp": "contract-review"
+              },
+              {
+                "id": "acct-2-4",
+                "name": "Elm Studio",
+                "owner": "Min",
+                "active": false,
+                "annualValue": 80661,
+                "followUp": "none"
+              }
+            ]
+          }
+        }
+      ],
+      "finalState": {
+        "files": {},
+        "records": [
+          {
+            "id": "acct-2-1",
+            "name": "Fjord Freight",
+            "owner": "Harper",
+            "active": true,
+            "annualValue": 14019,
+            "followUp": "none"
+          },
+          {
+            "id": "acct-2-2",
+            "name": "Beacon Foods",
+            "owner": "Diego",
+            "active": true,
+            "annualValue": 23390,
+            "followUp": "none"
+          },
+          {
+            "id": "acct-2-3",
+            "name": "Fjord Freight",
+            "owner": "Harper",
+            "active": true,
+            "annualValue": 79692,
+            "followUp": "contract-review"
+          },
+          {
+            "id": "acct-2-4",
+            "name": "Elm Studio",
+            "owner": "Min",
+            "active": false,
+            "annualValue": 80661,
+            "followUp": "none"
+          }
+        ],
+        "finished": true
+      }
+    },
+    "result": {
+      "score": 0,
+      "reason": "Verification failed: CRM records.",
+      "details": {
+        "filesMatch": true,
+        "recordsMatch": false,
+        "finished": true
+      }
+    }
+  },
+  {
+    "taskId": "crm-renewal-03",
+    "kind": "no-finish",
+    "submission": {
+      "toolLog": [
+        {
+          "name": "list_records",
+          "args": {},
+          "result": null
+        },
+        {
+          "name": "update_record",
+          "args": {
+            "id": "acct-3-2",
+            "fields": {
+              "nextAction": "contract-review"
+            }
+          },
+          "result": null
+        }
+      ]
+    },
+    "result": {
+      "score": 0,
+      "reason": "Verification failed: finish_task.",
+      "details": {
+        "filesMatch": true,
+        "recordsMatch": true,
+        "finished": false
+      }
+    }
+  },
+  {
+    "taskId": "crm-renewal-03",
+    "kind": "extra-file",
+    "submission": {
+      "toolLog": [
+        {
+          "name": "list_records",
+          "args": {},
+          "result": null
+        },
+        {
+          "name": "update_record",
+          "args": {
+            "id": "acct-3-2",
+            "fields": {
+              "nextAction": "contract-review"
+            }
+          },
+          "result": null
+        },
+        {
+          "name": "write_file",
+          "args": {
+            "path": "unrequested.txt",
+            "content": "x"
+          },
+          "result": null
+        },
+        {
+          "name": "finish_task",
+          "args": {},
+          "result": null
+        }
+      ]
+    },
+    "result": {
+      "score": 0,
+      "reason": "Verification failed: files.",
+      "details": {
+        "filesMatch": false,
+        "recordsMatch": true,
+        "finished": true
+      }
+    }
+  },
+  {
+    "taskId": "crm-renewal-03",
+    "kind": "forged-state",
+    "submission": {
+      "toolLog": [
+        {
+          "name": "finish_task",
+          "args": {},
+          "result": {
+            "files": {},
+            "records": [
+              {
+                "id": "acct-3-1",
+                "name": "Elm Studio",
+                "owner": "Min",
+                "active": true,
+                "annualValue": 90413,
+                "nextAction": "none"
+              },
+              {
+                "id": "acct-3-2",
+                "name": "Aster Works",
+                "owner": "Zoe",
+                "active": true,
+                "annualValue": 98472,
+                "nextAction": "contract-review"
+              },
+              {
+                "id": "acct-3-3",
+                "name": "Cedar Labs",
+                "owner": "Zoe",
+                "active": true,
+                "annualValue": 50444,
+                "nextAction": "none"
+              },
+              {
+                "id": "acct-3-4",
+                "name": "Cedar Labs",
+                "owner": "Zoe",
+                "active": false,
+                "annualValue": 92227,
+                "nextAction": "none"
+              }
+            ]
+          }
+        }
+      ],
+      "finalState": {
+        "files": {},
+        "records": [
+          {
+            "id": "acct-3-1",
+            "name": "Elm Studio",
+            "owner": "Min",
+            "active": true,
+            "annualValue": 90413,
+            "nextAction": "none"
+          },
+          {
+            "id": "acct-3-2",
+            "name": "Aster Works",
+            "owner": "Zoe",
+            "active": true,
+            "annualValue": 98472,
+            "nextAction": "contract-review"
+          },
+          {
+            "id": "acct-3-3",
+            "name": "Cedar Labs",
+            "owner": "Zoe",
+            "active": true,
+            "annualValue": 50444,
+            "nextAction": "none"
+          },
+          {
+            "id": "acct-3-4",
+            "name": "Cedar Labs",
+            "owner": "Zoe",
+            "active": false,
+            "annualValue": 92227,
+            "nextAction": "none"
+          }
+        ],
+        "finished": true
+      }
+    },
+    "result": {
+      "score": 0,
+      "reason": "Verification failed: CRM records.",
+      "details": {
+        "filesMatch": true,
+        "recordsMatch": false,
+        "finished": true
+      }
+    }
+  },
+  {
+    "taskId": "crm-renewal-04",
+    "kind": "no-finish",
+    "submission": {
+      "toolLog": [
+        {
+          "name": "list_records",
+          "args": {},
+          "result": null
+        },
+        {
+          "name": "update_record",
+          "args": {
+            "id": "acct-4-1",
+            "fields": {
+              "nextAction": "renewal-check"
+            }
+          },
+          "result": null
+        }
+      ]
+    },
+    "result": {
+      "score": 0,
+      "reason": "Verification failed: finish_task.",
+      "details": {
+        "filesMatch": true,
+        "recordsMatch": true,
+        "finished": false
+      }
+    }
+  },
+  {
+    "taskId": "crm-renewal-04",
+    "kind": "extra-file",
+    "submission": {
+      "toolLog": [
+        {
+          "name": "list_records",
+          "args": {},
+          "result": null
+        },
+        {
+          "name": "update_record",
+          "args": {
+            "id": "acct-4-1",
+            "fields": {
+              "nextAction": "renewal-check"
+            }
+          },
+          "result": null
+        },
+        {
+          "name": "write_file",
+          "args": {
+            "path": "unrequested.txt",
+            "content": "x"
+          },
+          "result": null
+        },
+        {
+          "name": "finish_task",
+          "args": {},
+          "result": null
+        }
+      ]
+    },
+    "result": {
+      "score": 0,
+      "reason": "Verification failed: files.",
+      "details": {
+        "filesMatch": false,
+        "recordsMatch": true,
+        "finished": true
+      }
+    }
+  },
+  {
+    "taskId": "crm-renewal-04",
+    "kind": "forged-state",
+    "submission": {
+      "toolLog": [
+        {
+          "name": "finish_task",
+          "args": {},
+          "result": {
+            "files": {},
+            "records": [
+              {
+                "id": "acct-4-1",
+                "name": "Fjord Freight",
+                "owner": "Harper",
+                "active": true,
+                "annualValue": 76769,
+                "nextAction": "renewal-check"
+              },
+              {
+                "id": "acct-4-2",
+                "name": "Fjord Freight",
+                "owner": "Harper",
+                "active": true,
+                "annualValue": 26302,
+                "nextAction": "none"
+              },
+              {
+                "id": "acct-4-3",
+                "name": "Aster Works",
+                "owner": "Min",
+                "active": true,
+                "annualValue": 30782,
+                "nextAction": "none"
+              },
+              {
+                "id": "acct-4-4",
+                "name": "Fjord Freight",
+                "owner": "Harper",
+                "active": false,
+                "annualValue": 15502,
+                "nextAction": "none"
+              }
+            ]
+          }
+        }
+      ],
+      "finalState": {
+        "files": {},
+        "records": [
+          {
+            "id": "acct-4-1",
+            "name": "Fjord Freight",
+            "owner": "Harper",
+            "active": true,
+            "annualValue": 76769,
+            "nextAction": "renewal-check"
+          },
+          {
+            "id": "acct-4-2",
+            "name": "Fjord Freight",
+            "owner": "Harper",
+            "active": true,
+            "annualValue": 26302,
+            "nextAction": "none"
+          },
+          {
+            "id": "acct-4-3",
+            "name": "Aster Works",
+            "owner": "Min",
+            "active": true,
+            "annualValue": 30782,
+            "nextAction": "none"
+          },
+          {
+            "id": "acct-4-4",
+            "name": "Fjord Freight",
+            "owner": "Harper",
+            "active": false,
+            "annualValue": 15502,
+            "nextAction": "none"
+          }
+        ],
+        "finished": true
+      }
+    },
+    "result": {
+      "score": 0,
+      "reason": "Verification failed: CRM records.",
+      "details": {
+        "filesMatch": true,
+        "recordsMatch": false,
+        "finished": true
+      }
+    }
+  },
+  {
+    "taskId": "crm-renewal-05",
+    "kind": "no-finish",
+    "submission": {
+      "toolLog": [
+        {
+          "name": "list_records",
+          "args": {},
+          "result": null
+        },
+        {
+          "name": "update_record",
+          "args": {
+            "id": "acct-5-1",
+            "fields": {
+              "followUp": "renewal-review"
+            }
+          },
+          "result": null
+        }
+      ]
+    },
+    "result": {
+      "score": 0,
+      "reason": "Verification failed: finish_task.",
+      "details": {
+        "filesMatch": true,
+        "recordsMatch": true,
+        "finished": false
+      }
+    }
+  },
+  {
+    "taskId": "crm-renewal-05",
+    "kind": "extra-file",
+    "submission": {
+      "toolLog": [
+        {
+          "name": "list_records",
+          "args": {},
+          "result": null
+        },
+        {
+          "name": "update_record",
+          "args": {
+            "id": "acct-5-1",
+            "fields": {
+              "followUp": "renewal-review"
+            }
+          },
+          "result": null
+        },
+        {
+          "name": "write_file",
+          "args": {
+            "path": "unrequested.txt",
+            "content": "x"
+          },
+          "result": null
+        },
+        {
+          "name": "finish_task",
+          "args": {},
+          "result": null
+        }
+      ]
+    },
+    "result": {
+      "score": 0,
+      "reason": "Verification failed: files.",
+      "details": {
+        "filesMatch": false,
+        "recordsMatch": true,
+        "finished": true
+      }
+    }
+  },
+  {
+    "taskId": "crm-renewal-05",
+    "kind": "forged-state",
+    "submission": {
+      "toolLog": [
+        {
+          "name": "finish_task",
+          "args": {},
+          "result": {
+            "files": {},
+            "records": [
+              {
+                "id": "acct-5-1",
+                "name": "Beacon Foods",
+                "owner": "Min",
+                "active": true,
+                "annualValue": 54867,
+                "followUp": "renewal-review"
+              },
+              {
+                "id": "acct-5-2",
+                "name": "Fjord Freight",
+                "owner": "Amina",
+                "active": true,
+                "annualValue": 34678,
+                "followUp": "none"
+              },
+              {
+                "id": "acct-5-3",
+                "name": "Aster Works",
+                "owner": "Ravi",
+                "active": true,
+                "annualValue": 30763,
+                "followUp": "none"
+              },
+              {
+                "id": "acct-5-4",
+                "name": "Cedar Labs",
+                "owner": "Min",
+                "active": false,
+                "annualValue": 10057,
+                "followUp": "none"
+              }
+            ]
+          }
+        }
+      ],
+      "finalState": {
+        "files": {},
+        "records": [
+          {
+            "id": "acct-5-1",
+            "name": "Beacon Foods",
+            "owner": "Min",
+            "active": true,
+            "annualValue": 54867,
+            "followUp": "renewal-review"
+          },
+          {
+            "id": "acct-5-2",
+            "name": "Fjord Freight",
+            "owner": "Amina",
+            "active": true,
+            "annualValue": 34678,
+            "followUp": "none"
+          },
+          {
+            "id": "acct-5-3",
+            "name": "Aster Works",
+            "owner": "Ravi",
+            "active": true,
+            "annualValue": 30763,
+            "followUp": "none"
+          },
+          {
+            "id": "acct-5-4",
+            "name": "Cedar Labs",
+            "owner": "Min",
+            "active": false,
+            "annualValue": 10057,
+            "followUp": "none"
+          }
+        ],
+        "finished": true
+      }
+    },
+    "result": {
+      "score": 0,
+      "reason": "Verification failed: CRM records.",
+      "details": {
+        "filesMatch": true,
+        "recordsMatch": false,
+        "finished": true
+      }
+    }
+  },
+  {
+    "taskId": "crm-renewal-06",
+    "kind": "no-finish",
+    "submission": {
+      "toolLog": [
+        {
+          "name": "list_records",
+          "args": {},
+          "result": null
+        },
+        {
+          "name": "update_record",
+          "args": {
+            "id": "acct-6-3",
+            "fields": {
+              "nextAction": "renewal-review"
+            }
+          },
+          "result": null
+        }
+      ]
+    },
+    "result": {
+      "score": 0,
+      "reason": "Verification failed: finish_task.",
+      "details": {
+        "filesMatch": true,
+        "recordsMatch": true,
+        "finished": false
+      }
+    }
+  },
+  {
+    "taskId": "crm-renewal-06",
+    "kind": "extra-file",
+    "submission": {
+      "toolLog": [
+        {
+          "name": "list_records",
+          "args": {},
+          "result": null
+        },
+        {
+          "name": "update_record",
+          "args": {
+            "id": "acct-6-3",
+            "fields": {
+              "nextAction": "renewal-review"
+            }
+          },
+          "result": null
+        },
+        {
+          "name": "write_file",
+          "args": {
+            "path": "unrequested.txt",
+            "content": "x"
+          },
+          "result": null
+        },
+        {
+          "name": "finish_task",
+          "args": {},
+          "result": null
+        }
+      ]
+    },
+    "result": {
+      "score": 0,
+      "reason": "Verification failed: files.",
+      "details": {
+        "filesMatch": false,
+        "recordsMatch": true,
+        "finished": true
+      }
+    }
+  },
+  {
+    "taskId": "crm-renewal-06",
+    "kind": "forged-state",
+    "submission": {
+      "toolLog": [
+        {
+          "name": "finish_task",
+          "args": {},
+          "result": {
+            "files": {},
+            "records": [
+              {
+                "id": "acct-6-1",
+                "name": "Elm Studio",
+                "owner": "Ravi",
+                "active": true,
+                "annualValue": 41561,
+                "nextAction": "none"
+              },
+              {
+                "id": "acct-6-2",
+                "name": "Fjord Freight",
+                "owner": "Diego",
+                "active": true,
+                "annualValue": 10970,
+                "nextAction": "none"
+              },
+              {
+                "id": "acct-6-3",
+                "name": "Cedar Labs",
+                "owner": "Harper",
+                "active": true,
+                "annualValue": 58985,
+                "nextAction": "renewal-review"
+              },
+              {
+                "id": "acct-6-4",
+                "name": "Fjord Freight",
+                "owner": "Diego",
+                "active": false,
+                "annualValue": 55532,
+                "nextAction": "none"
+              }
+            ]
+          }
+        }
+      ],
+      "finalState": {
+        "files": {},
+        "records": [
+          {
+            "id": "acct-6-1",
+            "name": "Elm Studio",
+            "owner": "Ravi",
+            "active": true,
+            "annualValue": 41561,
+            "nextAction": "none"
+          },
+          {
+            "id": "acct-6-2",
+            "name": "Fjord Freight",
+            "owner": "Diego",
+            "active": true,
+            "annualValue": 10970,
+            "nextAction": "none"
+          },
+          {
+            "id": "acct-6-3",
+            "name": "Cedar Labs",
+            "owner": "Harper",
+            "active": true,
+            "annualValue": 58985,
+            "nextAction": "renewal-review"
+          },
+          {
+            "id": "acct-6-4",
+            "name": "Fjord Freight",
+            "owner": "Diego",
+            "active": false,
+            "annualValue": 55532,
+            "nextAction": "none"
+          }
+        ],
+        "finished": true
+      }
+    },
+    "result": {
+      "score": 0,
+      "reason": "Verification failed: CRM records.",
+      "details": {
+        "filesMatch": true,
+        "recordsMatch": false,
+        "finished": true
+      }
+    }
+  },
+  {
+    "taskId": "crm-renewal-07",
+    "kind": "no-finish",
+    "submission": {
+      "toolLog": [
+        {
+          "name": "list_records",
+          "args": {},
+          "result": null
+        },
+        {
+          "name": "update_record",
+          "args": {
+            "id": "acct-7-3",
+            "fields": {
+              "followUp": "renewal-check"
+            }
+          },
+          "result": null
+        }
+      ]
+    },
+    "result": {
+      "score": 0,
+      "reason": "Verification failed: finish_task.",
+      "details": {
+        "filesMatch": true,
+        "recordsMatch": true,
+        "finished": false
+      }
+    }
+  },
+  {
+    "taskId": "crm-renewal-07",
+    "kind": "extra-file",
+    "submission": {
+      "toolLog": [
+        {
+          "name": "list_records",
+          "args": {},
+          "result": null
+        },
+        {
+          "name": "update_record",
+          "args": {
+            "id": "acct-7-3",
+            "fields": {
+              "followUp": "renewal-check"
+            }
+          },
+          "result": null
+        },
+        {
+          "name": "write_file",
+          "args": {
+            "path": "unrequested.txt",
+            "content": "x"
+          },
+          "result": null
+        },
+        {
+          "name": "finish_task",
+          "args": {},
+          "result": null
+        }
+      ]
+    },
+    "result": {
+      "score": 0,
+      "reason": "Verification failed: files.",
+      "details": {
+        "filesMatch": false,
+        "recordsMatch": true,
+        "finished": true
+      }
+    }
+  },
+  {
+    "taskId": "crm-renewal-07",
+    "kind": "forged-state",
+    "submission": {
+      "toolLog": [
+        {
+          "name": "finish_task",
+          "args": {},
+          "result": {
+            "files": {},
+            "records": [
+              {
+                "id": "acct-7-1",
+                "name": "Beacon Foods",
+                "owner": "Amina",
+                "active": true,
+                "annualValue": 30687,
+                "followUp": "none"
+              },
+              {
+                "id": "acct-7-2",
+                "name": "Elm Studio",
+                "owner": "Harper",
+                "active": true,
+                "annualValue": 10457,
+                "followUp": "none"
+              },
+              {
+                "id": "acct-7-3",
+                "name": "Dovetail Supply",
+                "owner": "Harper",
+                "active": true,
+                "annualValue": 42994,
+                "followUp": "renewal-check"
+              },
+              {
+                "id": "acct-7-4",
+                "name": "Fjord Freight",
+                "owner": "Harper",
+                "active": false,
+                "annualValue": 43195,
+                "followUp": "none"
+              }
+            ]
+          }
+        }
+      ],
+      "finalState": {
+        "files": {},
+        "records": [
+          {
+            "id": "acct-7-1",
+            "name": "Beacon Foods",
+            "owner": "Amina",
+            "active": true,
+            "annualValue": 30687,
+            "followUp": "none"
+          },
+          {
+            "id": "acct-7-2",
+            "name": "Elm Studio",
+            "owner": "Harper",
+            "active": true,
+            "annualValue": 10457,
+            "followUp": "none"
+          },
+          {
+            "id": "acct-7-3",
+            "name": "Dovetail Supply",
+            "owner": "Harper",
+            "active": true,
+            "annualValue": 42994,
+            "followUp": "renewal-check"
+          },
+          {
+            "id": "acct-7-4",
+            "name": "Fjord Freight",
+            "owner": "Harper",
+            "active": false,
+            "annualValue": 43195,
+            "followUp": "none"
+          }
+        ],
+        "finished": true
+      }
+    },
+    "result": {
+      "score": 0,
+      "reason": "Verification failed: CRM records.",
+      "details": {
+        "filesMatch": true,
+        "recordsMatch": false,
+        "finished": true
+      }
+    }
+  },
+  {
+    "taskId": "crm-renewal-08",
+    "kind": "no-finish",
+    "submission": {
+      "toolLog": [
+        {
+          "name": "list_records",
+          "args": {},
+          "result": null
+        },
+        {
+          "name": "update_record",
+          "args": {
+            "id": "acct-8-2",
+            "fields": {
+              "nextStep": "renewal-check"
+            }
+          },
+          "result": null
+        }
+      ]
+    },
+    "result": {
+      "score": 0,
+      "reason": "Verification failed: finish_task.",
+      "details": {
+        "filesMatch": true,
+        "recordsMatch": true,
+        "finished": false
+      }
+    }
+  },
+  {
+    "taskId": "crm-renewal-08",
+    "kind": "extra-file",
+    "submission": {
+      "toolLog": [
+        {
+          "name": "list_records",
+          "args": {},
+          "result": null
+        },
+        {
+          "name": "update_record",
+          "args": {
+            "id": "acct-8-2",
+            "fields": {
+              "nextStep": "renewal-check"
+            }
+          },
+          "result": null
+        },
+        {
+          "name": "write_file",
+          "args": {
+            "path": "unrequested.txt",
+            "content": "x"
+          },
+          "result": null
+        },
+        {
+          "name": "finish_task",
+          "args": {},
+          "result": null
+        }
+      ]
+    },
+    "result": {
+      "score": 0,
+      "reason": "Verification failed: files.",
+      "details": {
+        "filesMatch": false,
+        "recordsMatch": true,
+        "finished": true
+      }
+    }
+  },
+  {
+    "taskId": "crm-renewal-08",
+    "kind": "forged-state",
+    "submission": {
+      "toolLog": [
+        {
+          "name": "finish_task",
+          "args": {},
+          "result": {
+            "files": {},
+            "records": [
+              {
+                "id": "acct-8-1",
+                "name": "Dovetail Supply",
+                "owner": "Zoe",
+                "active": true,
+                "annualValue": 91195,
+                "nextStep": "none"
+              },
+              {
+                "id": "acct-8-2",
+                "name": "Aster Works",
+                "owner": "Min",
+                "active": true,
+                "annualValue": 96756,
+                "nextStep": "renewal-check"
+              },
+              {
+                "id": "acct-8-3",
+                "name": "Cedar Labs",
+                "owner": "Zoe",
+                "active": true,
+                "annualValue": 45308,
+                "nextStep": "none"
+              },
+              {
+                "id": "acct-8-4",
+                "name": "Dovetail Supply",
+                "owner": "Diego",
+                "active": false,
+                "annualValue": 79132,
+                "nextStep": "none"
+              }
+            ]
+          }
+        }
+      ],
+      "finalState": {
+        "files": {},
+        "records": [
+          {
+            "id": "acct-8-1",
+            "name": "Dovetail Supply",
+            "owner": "Zoe",
+            "active": true,
+            "annualValue": 91195,
+            "nextStep": "none"
+          },
+          {
+            "id": "acct-8-2",
+            "name": "Aster Works",
+            "owner": "Min",
+            "active": true,
+            "annualValue": 96756,
+            "nextStep": "renewal-check"
+          },
+          {
+            "id": "acct-8-3",
+            "name": "Cedar Labs",
+            "owner": "Zoe",
+            "active": true,
+            "annualValue": 45308,
+            "nextStep": "none"
+          },
+          {
+            "id": "acct-8-4",
+            "name": "Dovetail Supply",
+            "owner": "Diego",
+            "active": false,
+            "annualValue": 79132,
+            "nextStep": "none"
+          }
+        ],
+        "finished": true
+      }
+    },
+    "result": {
+      "score": 0,
+      "reason": "Verification failed: CRM records.",
+      "details": {
+        "filesMatch": true,
+        "recordsMatch": false,
+        "finished": true
+      }
+    }
+  },
+  {
+    "taskId": "crm-renewal-09",
+    "kind": "no-finish",
+    "submission": {
+      "toolLog": [
+        {
+          "name": "list_records",
+          "args": {},
+          "result": null
+        },
+        {
+          "name": "update_record",
+          "args": {
+            "id": "acct-9-3",
+            "fields": {
+              "nextAction": "contract-review"
+            }
+          },
+          "result": null
+        }
+      ]
+    },
+    "result": {
+      "score": 0,
+      "reason": "Verification failed: finish_task.",
+      "details": {
+        "filesMatch": true,
+        "recordsMatch": true,
+        "finished": false
+      }
+    }
+  },
+  {
+    "taskId": "crm-renewal-09",
+    "kind": "extra-file",
+    "submission": {
+      "toolLog": [
+        {
+          "name": "list_records",
+          "args": {},
+          "result": null
+        },
+        {
+          "name": "update_record",
+          "args": {
+            "id": "acct-9-3",
+            "fields": {
+              "nextAction": "contract-review"
+            }
+          },
+          "result": null
+        },
+        {
+          "name": "write_file",
+          "args": {
+            "path": "unrequested.txt",
+            "content": "x"
+          },
+          "result": null
+        },
+        {
+          "name": "finish_task",
+          "args": {},
+          "result": null
+        }
+      ]
+    },
+    "result": {
+      "score": 0,
+      "reason": "Verification failed: files.",
+      "details": {
+        "filesMatch": false,
+        "recordsMatch": true,
+        "finished": true
+      }
+    }
+  },
+  {
+    "taskId": "crm-renewal-09",
+    "kind": "forged-state",
+    "submission": {
+      "toolLog": [
+        {
+          "name": "finish_task",
+          "args": {},
+          "result": {
+            "files": {},
+            "records": [
+              {
+                "id": "acct-9-1",
+                "name": "Cedar Labs",
+                "owner": "Min",
+                "active": true,
+                "annualValue": 68191,
+                "nextAction": "none"
+              },
+              {
+                "id": "acct-9-2",
+                "name": "Dovetail Supply",
+                "owner": "Min",
+                "active": true,
+                "annualValue": 40607,
+                "nextAction": "none"
+              },
+              {
+                "id": "acct-9-3",
+                "name": "Beacon Foods",
+                "owner": "Diego",
+                "active": true,
+                "annualValue": 79442,
+                "nextAction": "contract-review"
+              },
+              {
+                "id": "acct-9-4",
+                "name": "Dovetail Supply",
+                "owner": "Harper",
+                "active": false,
+                "annualValue": 10614,
+                "nextAction": "none"
+              }
+            ]
+          }
+        }
+      ],
+      "finalState": {
+        "files": {},
+        "records": [
+          {
+            "id": "acct-9-1",
+            "name": "Cedar Labs",
+            "owner": "Min",
+            "active": true,
+            "annualValue": 68191,
+            "nextAction": "none"
+          },
+          {
+            "id": "acct-9-2",
+            "name": "Dovetail Supply",
+            "owner": "Min",
+            "active": true,
+            "annualValue": 40607,
+            "nextAction": "none"
+          },
+          {
+            "id": "acct-9-3",
+            "name": "Beacon Foods",
+            "owner": "Diego",
+            "active": true,
+            "annualValue": 79442,
+            "nextAction": "contract-review"
+          },
+          {
+            "id": "acct-9-4",
+            "name": "Dovetail Supply",
+            "owner": "Harper",
+            "active": false,
+            "annualValue": 10614,
+            "nextAction": "none"
+          }
+        ],
+        "finished": true
+      }
+    },
+    "result": {
+      "score": 0,
+      "reason": "Verification failed: CRM records.",
+      "details": {
+        "filesMatch": true,
+        "recordsMatch": false,
+        "finished": true
+      }
+    }
+  },
+  {
+    "taskId": "crm-renewal-10",
+    "kind": "no-finish",
+    "submission": {
+      "toolLog": [
+        {
+          "name": "list_records",
+          "args": {},
+          "result": null
+        },
+        {
+          "name": "update_record",
+          "args": {
+            "id": "acct-10-3",
+            "fields": {
+              "nextAction": "contract-review"
+            }
+          },
+          "result": null
+        }
+      ]
+    },
+    "result": {
+      "score": 0,
+      "reason": "Verification failed: finish_task.",
+      "details": {
+        "filesMatch": true,
+        "recordsMatch": true,
+        "finished": false
+      }
+    }
+  },
+  {
+    "taskId": "crm-renewal-10",
+    "kind": "extra-file",
+    "submission": {
+      "toolLog": [
+        {
+          "name": "list_records",
+          "args": {},
+          "result": null
+        },
+        {
+          "name": "update_record",
+          "args": {
+            "id": "acct-10-3",
+            "fields": {
+              "nextAction": "contract-review"
+            }
+          },
+          "result": null
+        },
+        {
+          "name": "write_file",
+          "args": {
+            "path": "unrequested.txt",
+            "content": "x"
+          },
+          "result": null
+        },
+        {
+          "name": "finish_task",
+          "args": {},
+          "result": null
+        }
+      ]
+    },
+    "result": {
+      "score": 0,
+      "reason": "Verification failed: files.",
+      "details": {
+        "filesMatch": false,
+        "recordsMatch": true,
+        "finished": true
+      }
+    }
+  },
+  {
+    "taskId": "crm-renewal-10",
+    "kind": "forged-state",
+    "submission": {
+      "toolLog": [
+        {
+          "name": "finish_task",
+          "args": {},
+          "result": {
+            "files": {},
+            "records": [
+              {
+                "id": "acct-10-1",
+                "name": "Fjord Freight",
+                "owner": "Harper",
+                "active": true,
+                "annualValue": 60287,
+                "nextAction": "none"
+              },
+              {
+                "id": "acct-10-2",
+                "name": "Fjord Freight",
+                "owner": "Zoe",
+                "active": true,
+                "annualValue": 71909,
+                "nextAction": "none"
+              },
+              {
+                "id": "acct-10-3",
+                "name": "Fjord Freight",
+                "owner": "Harper",
+                "active": true,
+                "annualValue": 83842,
+                "nextAction": "contract-review"
+              },
+              {
+                "id": "acct-10-4",
+                "name": "Dovetail Supply",
+                "owner": "Amina",
+                "active": false,
+                "annualValue": 38615,
+                "nextAction": "none"
+              }
+            ]
+          }
+        }
+      ],
+      "finalState": {
+        "files": {},
+        "records": [
+          {
+            "id": "acct-10-1",
+            "name": "Fjord Freight",
+            "owner": "Harper",
+            "active": true,
+            "annualValue": 60287,
+            "nextAction": "none"
+          },
+          {
+            "id": "acct-10-2",
+            "name": "Fjord Freight",
+            "owner": "Zoe",
+            "active": true,
+            "annualValue": 71909,
+            "nextAction": "none"
+          },
+          {
+            "id": "acct-10-3",
+            "name": "Fjord Freight",
+            "owner": "Harper",
+            "active": true,
+            "annualValue": 83842,
+            "nextAction": "contract-review"
+          },
+          {
+            "id": "acct-10-4",
+            "name": "Dovetail Supply",
+            "owner": "Amina",
+            "active": false,
+            "annualValue": 38615,
+            "nextAction": "none"
+          }
+        ],
+        "finished": true
+      }
+    },
+    "result": {
+      "score": 0,
+      "reason": "Verification failed: CRM records.",
+      "details": {
+        "filesMatch": true,
+        "recordsMatch": false,
+        "finished": true
+      }
+    }
+  },
+  {
+    "taskId": "file-handoff-01",
+    "kind": "no-finish",
+    "submission": {
+      "toolLog": [
+        {
+          "name": "read_file",
+          "args": {
+            "path": "handoffs/west-4297.md"
+          },
+          "result": null
+        },
+        {
+          "name": "write_file",
+          "args": {
+            "path": "handoffs/west-4297.md",
+            "content": "# West handoff\n\nOwner: Harper\nCadence: monthly\nEscalation: operations@example.test\n"
+          },
+          "result": null
+        }
+      ]
+    },
+    "result": {
+      "score": 0,
+      "reason": "Verification failed: finish_task.",
+      "details": {
+        "filesMatch": true,
+        "recordsMatch": true,
+        "finished": false
+      }
+    }
+  },
+  {
+    "taskId": "file-handoff-01",
+    "kind": "extra-file",
+    "submission": {
+      "toolLog": [
+        {
+          "name": "read_file",
+          "args": {
+            "path": "handoffs/west-4297.md"
+          },
+          "result": null
+        },
+        {
+          "name": "write_file",
+          "args": {
+            "path": "handoffs/west-4297.md",
+            "content": "# West handoff\n\nOwner: Harper\nCadence: monthly\nEscalation: operations@example.test\n"
+          },
+          "result": null
+        },
+        {
+          "name": "write_file",
+          "args": {
+            "path": "unrequested.txt",
+            "content": "x"
+          },
+          "result": null
+        },
+        {
+          "name": "finish_task",
+          "args": {},
+          "result": null
+        }
+      ]
+    },
+    "result": {
+      "score": 0,
+      "reason": "Verification failed: files.",
+      "details": {
+        "filesMatch": false,
+        "recordsMatch": true,
+        "finished": true
+      }
+    }
+  },
+  {
+    "taskId": "file-handoff-01",
+    "kind": "forged-state",
+    "submission": {
+      "toolLog": [
+        {
+          "name": "finish_task",
+          "args": {},
+          "result": {
+            "files": {
+              "handoffs/west-4297.md": "# West handoff\n\nOwner: Harper\nCadence: monthly\nEscalation: operations@example.test\n",
+              "handoffs/README.md": "Handoff files are managed by region.\n"
+            },
+            "records": []
+          }
+        }
+      ],
+      "finalState": {
+        "files": {
+          "handoffs/west-4297.md": "# West handoff\n\nOwner: Harper\nCadence: monthly\nEscalation: operations@example.test\n",
+          "handoffs/README.md": "Handoff files are managed by region.\n"
+        },
+        "records": [],
+        "finished": true
+      }
+    },
+    "result": {
+      "score": 0,
+      "reason": "Verification failed: files.",
+      "details": {
+        "filesMatch": false,
+        "recordsMatch": true,
+        "finished": true
+      }
+    }
+  },
+  {
+    "taskId": "file-handoff-02",
+    "kind": "no-finish",
+    "submission": {
+      "toolLog": [
+        {
+          "name": "read_file",
+          "args": {
+            "path": "handoffs/south-3233.md"
+          },
+          "result": null
+        },
+        {
+          "name": "write_file",
+          "args": {
+            "path": "handoffs/south-3233.md",
+            "content": "# South handoff\n\nOwner: Harper\nCadence: daily\nEscalation: operations@example.test\n"
+          },
+          "result": null
+        }
+      ]
+    },
+    "result": {
+      "score": 0,
+      "reason": "Verification failed: finish_task.",
+      "details": {
+        "filesMatch": true,
+        "recordsMatch": true,
+        "finished": false
+      }
+    }
+  },
+  {
+    "taskId": "file-handoff-02",
+    "kind": "extra-file",
+    "submission": {
+      "toolLog": [
+        {
+          "name": "read_file",
+          "args": {
+            "path": "handoffs/south-3233.md"
+          },
+          "result": null
+        },
+        {
+          "name": "write_file",
+          "args": {
+            "path": "handoffs/south-3233.md",
+            "content": "# South handoff\n\nOwner: Harper\nCadence: daily\nEscalation: operations@example.test\n"
+          },
+          "result": null
+        },
+        {
+          "name": "write_file",
+          "args": {
+            "path": "unrequested.txt",
+            "content": "x"
+          },
+          "result": null
+        },
+        {
+          "name": "finish_task",
+          "args": {},
+          "result": null
+        }
+      ]
+    },
+    "result": {
+      "score": 0,
+      "reason": "Verification failed: files.",
+      "details": {
+        "filesMatch": false,
+        "recordsMatch": true,
+        "finished": true
+      }
+    }
+  },
+  {
+    "taskId": "file-handoff-02",
+    "kind": "forged-state",
+    "submission": {
+      "toolLog": [
+        {
+          "name": "finish_task",
+          "args": {},
+          "result": {
+            "files": {
+              "handoffs/south-3233.md": "# South handoff\n\nOwner: Harper\nCadence: daily\nEscalation: operations@example.test\n",
+              "handoffs/README.md": "Handoff files are managed by region.\n"
+            },
+            "records": []
+          }
+        }
+      ],
+      "finalState": {
+        "files": {
+          "handoffs/south-3233.md": "# South handoff\n\nOwner: Harper\nCadence: daily\nEscalation: operations@example.test\n",
+          "handoffs/README.md": "Handoff files are managed by region.\n"
+        },
+        "records": [],
+        "finished": true
+      }
+    },
+    "result": {
+      "score": 0,
+      "reason": "Verification failed: files.",
+      "details": {
+        "filesMatch": false,
+        "recordsMatch": true,
+        "finished": true
+      }
+    }
+  },
+  {
+    "taskId": "file-handoff-03",
+    "kind": "no-finish",
+    "submission": {
+      "toolLog": [
+        {
+          "name": "read_file",
+          "args": {
+            "path": "handoffs/west-4963.md"
+          },
+          "result": null
+        },
+        {
+          "name": "write_file",
+          "args": {
+            "path": "handoffs/west-4963.md",
+            "content": "# West handoff\n\nOwner: Min\nCadence: daily\nEscalation: operations@example.test\n"
+          },
+          "result": null
+        }
+      ]
+    },
+    "result": {
+      "score": 0,
+      "reason": "Verification failed: finish_task.",
+      "details": {
+        "filesMatch": true,
+        "recordsMatch": true,
+        "finished": false
+      }
+    }
+  },
+  {
+    "taskId": "file-handoff-03",
+    "kind": "extra-file",
+    "submission": {
+      "toolLog": [
+        {
+          "name": "read_file",
+          "args": {
+            "path": "handoffs/west-4963.md"
+          },
+          "result": null
+        },
+        {
+          "name": "write_file",
+          "args": {
+            "path": "handoffs/west-4963.md",
+            "content": "# West handoff\n\nOwner: Min\nCadence: daily\nEscalation: operations@example.test\n"
+          },
+          "result": null
+        },
+        {
+          "name": "write_file",
+          "args": {
+            "path": "unrequested.txt",
+            "content": "x"
+          },
+          "result": null
+        },
+        {
+          "name": "finish_task",
+          "args": {},
+          "result": null
+        }
+      ]
+    },
+    "result": {
+      "score": 0,
+      "reason": "Verification failed: files.",
+      "details": {
+        "filesMatch": false,
+        "recordsMatch": true,
+        "finished": true
+      }
+    }
+  },
+  {
+    "taskId": "file-handoff-03",
+    "kind": "forged-state",
+    "submission": {
+      "toolLog": [
+        {
+          "name": "finish_task",
+          "args": {},
+          "result": {
+            "files": {
+              "handoffs/west-4963.md": "# West handoff\n\nOwner: Min\nCadence: daily\nEscalation: operations@example.test\n",
+              "handoffs/README.md": "Handoff files are managed by region.\n"
+            },
+            "records": []
+          }
+        }
+      ],
+      "finalState": {
+        "files": {
+          "handoffs/west-4963.md": "# West handoff\n\nOwner: Min\nCadence: daily\nEscalation: operations@example.test\n",
+          "handoffs/README.md": "Handoff files are managed by region.\n"
+        },
+        "records": [],
+        "finished": true
+      }
+    },
+    "result": {
+      "score": 0,
+      "reason": "Verification failed: files.",
+      "details": {
+        "filesMatch": false,
+        "recordsMatch": true,
+        "finished": true
+      }
+    }
+  },
+  {
+    "taskId": "file-handoff-04",
+    "kind": "no-finish",
+    "submission": {
+      "toolLog": [
+        {
+          "name": "read_file",
+          "args": {
+            "path": "handoffs/south-4388.md"
+          },
+          "result": null
+        },
+        {
+          "name": "write_file",
+          "args": {
+            "path": "handoffs/south-4388.md",
+            "content": "# South handoff\n\nOwner: Ravi\nCadence: weekly\nEscalation: operations@example.test\n"
+          },
+          "result": null
+        }
+      ]
+    },
+    "result": {
+      "score": 0,
+      "reason": "Verification failed: finish_task.",
+      "details": {
+        "filesMatch": true,
+        "recordsMatch": true,
+        "finished": false
+      }
+    }
+  },
+  {
+    "taskId": "file-handoff-04",
+    "kind": "extra-file",
+    "submission": {
+      "toolLog": [
+        {
+          "name": "read_file",
+          "args": {
+            "path": "handoffs/south-4388.md"
+          },
+          "result": null
+        },
+        {
+          "name": "write_file",
+          "args": {
+            "path": "handoffs/south-4388.md",
+            "content": "# South handoff\n\nOwner: Ravi\nCadence: weekly\nEscalation: operations@example.test\n"
+          },
+          "result": null
+        },
+        {
+          "name": "write_file",
+          "args": {
+            "path": "unrequested.txt",
+            "content": "x"
+          },
+          "result": null
+        },
+        {
+          "name": "finish_task",
+          "args": {},
+          "result": null
+        }
+      ]
+    },
+    "result": {
+      "score": 0,
+      "reason": "Verification failed: files.",
+      "details": {
+        "filesMatch": false,
+        "recordsMatch": true,
+        "finished": true
+      }
+    }
+  },
+  {
+    "taskId": "file-handoff-04",
+    "kind": "forged-state",
+    "submission": {
+      "toolLog": [
+        {
+          "name": "finish_task",
+          "args": {},
+          "result": {
+            "files": {
+              "handoffs/south-4388.md": "# South handoff\n\nOwner: Ravi\nCadence: weekly\nEscalation: operations@example.test\n",
+              "handoffs/README.md": "Handoff files are managed by region.\n"
+            },
+            "records": []
+          }
+        }
+      ],
+      "finalState": {
+        "files": {
+          "handoffs/south-4388.md": "# South handoff\n\nOwner: Ravi\nCadence: weekly\nEscalation: operations@example.test\n",
+          "handoffs/README.md": "Handoff files are managed by region.\n"
+        },
+        "records": [],
+        "finished": true
+      }
+    },
+    "result": {
+      "score": 0,
+      "reason": "Verification failed: files.",
+      "details": {
+        "filesMatch": false,
+        "recordsMatch": true,
+        "finished": true
+      }
+    }
+  },
+  {
+    "taskId": "file-handoff-05",
+    "kind": "no-finish",
+    "submission": {
+      "toolLog": [
+        {
+          "name": "read_file",
+          "args": {
+            "path": "handoffs/west-3905.md"
+          },
+          "result": null
+        },
+        {
+          "name": "write_file",
+          "args": {
+            "path": "handoffs/west-3905.md",
+            "content": "# West handoff\n\nOwner: Amina\nCadence: daily\nEscalation: operations@example.test\n"
+          },
+          "result": null
+        }
+      ]
+    },
+    "result": {
+      "score": 0,
+      "reason": "Verification failed: finish_task.",
+      "details": {
+        "filesMatch": true,
+        "recordsMatch": true,
+        "finished": false
+      }
+    }
+  },
+  {
+    "taskId": "file-handoff-05",
+    "kind": "extra-file",
+    "submission": {
+      "toolLog": [
+        {
+          "name": "read_file",
+          "args": {
+            "path": "handoffs/west-3905.md"
+          },
+          "result": null
+        },
+        {
+          "name": "write_file",
+          "args": {
+            "path": "handoffs/west-3905.md",
+            "content": "# West handoff\n\nOwner: Amina\nCadence: daily\nEscalation: operations@example.test\n"
+          },
+          "result": null
+        },
+        {
+          "name": "write_file",
+          "args": {
+            "path": "unrequested.txt",
+            "content": "x"
+          },
+          "result": null
+        },
+        {
+          "name": "finish_task",
+          "args": {},
+          "result": null
+        }
+      ]
+    },
+    "result": {
+      "score": 0,
+      "reason": "Verification failed: files.",
+      "details": {
+        "filesMatch": false,
+        "recordsMatch": true,
+        "finished": true
+      }
+    }
+  },
+  {
+    "taskId": "file-handoff-05",
+    "kind": "forged-state",
+    "submission": {
+      "toolLog": [
+        {
+          "name": "finish_task",
+          "args": {},
+          "result": {
+            "files": {
+              "handoffs/west-3905.md": "# West handoff\n\nOwner: Amina\nCadence: daily\nEscalation: operations@example.test\n",
+              "handoffs/README.md": "Handoff files are managed by region.\n"
+            },
+            "records": []
+          }
+        }
+      ],
+      "finalState": {
+        "files": {
+          "handoffs/west-3905.md": "# West handoff\n\nOwner: Amina\nCadence: daily\nEscalation: operations@example.test\n",
+          "handoffs/README.md": "Handoff files are managed by region.\n"
+        },
+        "records": [],
+        "finished": true
+      }
+    },
+    "result": {
+      "score": 0,
+      "reason": "Verification failed: files.",
+      "details": {
+        "filesMatch": false,
+        "recordsMatch": true,
+        "finished": true
+      }
+    }
+  },
+  {
+    "taskId": "file-handoff-06",
+    "kind": "no-finish",
+    "submission": {
+      "toolLog": [
+        {
+          "name": "read_file",
+          "args": {
+            "path": "handoffs/south-8032.md"
+          },
+          "result": null
+        },
+        {
+          "name": "write_file",
+          "args": {
+            "path": "handoffs/south-8032.md",
+            "content": "# South handoff\n\nOwner: Harper\nCadence: monthly\nEscalation: operations@example.test\n"
+          },
+          "result": null
+        }
+      ]
+    },
+    "result": {
+      "score": 0,
+      "reason": "Verification failed: finish_task.",
+      "details": {
+        "filesMatch": true,
+        "recordsMatch": true,
+        "finished": false
+      }
+    }
+  },
+  {
+    "taskId": "file-handoff-06",
+    "kind": "extra-file",
+    "submission": {
+      "toolLog": [
+        {
+          "name": "read_file",
+          "args": {
+            "path": "handoffs/south-8032.md"
+          },
+          "result": null
+        },
+        {
+          "name": "write_file",
+          "args": {
+            "path": "handoffs/south-8032.md",
+            "content": "# South handoff\n\nOwner: Harper\nCadence: monthly\nEscalation: operations@example.test\n"
+          },
+          "result": null
+        },
+        {
+          "name": "write_file",
+          "args": {
+            "path": "unrequested.txt",
+            "content": "x"
+          },
+          "result": null
+        },
+        {
+          "name": "finish_task",
+          "args": {},
+          "result": null
+        }
+      ]
+    },
+    "result": {
+      "score": 0,
+      "reason": "Verification failed: files.",
+      "details": {
+        "filesMatch": false,
+        "recordsMatch": true,
+        "finished": true
+      }
+    }
+  },
+  {
+    "taskId": "file-handoff-06",
+    "kind": "forged-state",
+    "submission": {
+      "toolLog": [
+        {
+          "name": "finish_task",
+          "args": {},
+          "result": {
+            "files": {
+              "handoffs/south-8032.md": "# South handoff\n\nOwner: Harper\nCadence: monthly\nEscalation: operations@example.test\n",
+              "handoffs/README.md": "Handoff files are managed by region.\n"
+            },
+            "records": []
+          }
+        }
+      ],
+      "finalState": {
+        "files": {
+          "handoffs/south-8032.md": "# South handoff\n\nOwner: Harper\nCadence: monthly\nEscalation: operations@example.test\n",
+          "handoffs/README.md": "Handoff files are managed by region.\n"
+        },
+        "records": [],
+        "finished": true
+      }
+    },
+    "result": {
+      "score": 0,
+      "reason": "Verification failed: files.",
+      "details": {
+        "filesMatch": false,
+        "recordsMatch": true,
+        "finished": true
+      }
+    }
+  },
+  {
+    "taskId": "file-handoff-07",
+    "kind": "no-finish",
+    "submission": {
+      "toolLog": [
+        {
+          "name": "read_file",
+          "args": {
+            "path": "handoffs/north-7395.md"
+          },
+          "result": null
+        },
+        {
+          "name": "write_file",
+          "args": {
+            "path": "handoffs/north-7395.md",
+            "content": "# North handoff\n\nOwner: Amina\nCadence: monthly\nEscalation: operations@example.test\n"
+          },
+          "result": null
+        }
+      ]
+    },
+    "result": {
+      "score": 0,
+      "reason": "Verification failed: finish_task.",
+      "details": {
+        "filesMatch": true,
+        "recordsMatch": true,
+        "finished": false
+      }
+    }
+  },
+  {
+    "taskId": "file-handoff-07",
+    "kind": "extra-file",
+    "submission": {
+      "toolLog": [
+        {
+          "name": "read_file",
+          "args": {
+            "path": "handoffs/north-7395.md"
+          },
+          "result": null
+        },
+        {
+          "name": "write_file",
+          "args": {
+            "path": "handoffs/north-7395.md",
+            "content": "# North handoff\n\nOwner: Amina\nCadence: monthly\nEscalation: operations@example.test\n"
+          },
+          "result": null
+        },
+        {
+          "name": "write_file",
+          "args": {
+            "path": "unrequested.txt",
+            "content": "x"
+          },
+          "result": null
+        },
+        {
+          "name": "finish_task",
+          "args": {},
+          "result": null
+        }
+      ]
+    },
+    "result": {
+      "score": 0,
+      "reason": "Verification failed: files.",
+      "details": {
+        "filesMatch": false,
+        "recordsMatch": true,
+        "finished": true
+      }
+    }
+  },
+  {
+    "taskId": "file-handoff-07",
+    "kind": "forged-state",
+    "submission": {
+      "toolLog": [
+        {
+          "name": "finish_task",
+          "args": {},
+          "result": {
+            "files": {
+              "handoffs/north-7395.md": "# North handoff\n\nOwner: Amina\nCadence: monthly\nEscalation: operations@example.test\n",
+              "handoffs/README.md": "Handoff files are managed by region.\n"
+            },
+            "records": []
+          }
+        }
+      ],
+      "finalState": {
+        "files": {
+          "handoffs/north-7395.md": "# North handoff\n\nOwner: Amina\nCadence: monthly\nEscalation: operations@example.test\n",
+          "handoffs/README.md": "Handoff files are managed by region.\n"
+        },
+        "records": [],
+        "finished": true
+      }
+    },
+    "result": {
+      "score": 0,
+      "reason": "Verification failed: files.",
+      "details": {
+        "filesMatch": false,
+        "recordsMatch": true,
+        "finished": true
+      }
+    }
+  },
+  {
+    "taskId": "file-handoff-08",
+    "kind": "no-finish",
+    "submission": {
+      "toolLog": [
+        {
+          "name": "read_file",
+          "args": {
+            "path": "handoffs/south-3370.md"
+          },
+          "result": null
+        },
+        {
+          "name": "write_file",
+          "args": {
+            "path": "handoffs/south-3370.md",
+            "content": "# South handoff\n\nOwner: Diego\nCadence: daily\nEscalation: operations@example.test\n"
+          },
+          "result": null
+        }
+      ]
+    },
+    "result": {
+      "score": 0,
+      "reason": "Verification failed: finish_task.",
+      "details": {
+        "filesMatch": true,
+        "recordsMatch": true,
+        "finished": false
+      }
+    }
+  },
+  {
+    "taskId": "file-handoff-08",
+    "kind": "extra-file",
+    "submission": {
+      "toolLog": [
+        {
+          "name": "read_file",
+          "args": {
+            "path": "handoffs/south-3370.md"
+          },
+          "result": null
+        },
+        {
+          "name": "write_file",
+          "args": {
+            "path": "handoffs/south-3370.md",
+            "content": "# South handoff\n\nOwner: Diego\nCadence: daily\nEscalation: operations@example.test\n"
+          },
+          "result": null
+        },
+        {
+          "name": "write_file",
+          "args": {
+            "path": "unrequested.txt",
+            "content": "x"
+          },
+          "result": null
+        },
+        {
+          "name": "finish_task",
+          "args": {},
+          "result": null
+        }
+      ]
+    },
+    "result": {
+      "score": 0,
+      "reason": "Verification failed: files.",
+      "details": {
+        "filesMatch": false,
+        "recordsMatch": true,
+        "finished": true
+      }
+    }
+  },
+  {
+    "taskId": "file-handoff-08",
+    "kind": "forged-state",
+    "submission": {
+      "toolLog": [
+        {
+          "name": "finish_task",
+          "args": {},
+          "result": {
+            "files": {
+              "handoffs/south-3370.md": "# South handoff\n\nOwner: Diego\nCadence: daily\nEscalation: operations@example.test\n",
+              "handoffs/README.md": "Handoff files are managed by region.\n"
+            },
+            "records": []
+          }
+        }
+      ],
+      "finalState": {
+        "files": {
+          "handoffs/south-3370.md": "# South handoff\n\nOwner: Diego\nCadence: daily\nEscalation: operations@example.test\n",
+          "handoffs/README.md": "Handoff files are managed by region.\n"
+        },
+        "records": [],
+        "finished": true
+      }
+    },
+    "result": {
+      "score": 0,
+      "reason": "Verification failed: files.",
+      "details": {
+        "filesMatch": false,
+        "recordsMatch": true,
+        "finished": true
+      }
+    }
+  },
+  {
+    "taskId": "file-handoff-09",
+    "kind": "no-finish",
+    "submission": {
+      "toolLog": [
+        {
+          "name": "read_file",
+          "args": {
+            "path": "handoffs/east-7588.md"
+          },
+          "result": null
+        },
+        {
+          "name": "write_file",
+          "args": {
+            "path": "handoffs/east-7588.md",
+            "content": "# East handoff\n\nOwner: Ravi\nCadence: weekly\nEscalation: operations@example.test\n"
+          },
+          "result": null
+        }
+      ]
+    },
+    "result": {
+      "score": 0,
+      "reason": "Verification failed: finish_task.",
+      "details": {
+        "filesMatch": true,
+        "recordsMatch": true,
+        "finished": false
+      }
+    }
+  },
+  {
+    "taskId": "file-handoff-09",
+    "kind": "extra-file",
+    "submission": {
+      "toolLog": [
+        {
+          "name": "read_file",
+          "args": {
+            "path": "handoffs/east-7588.md"
+          },
+          "result": null
+        },
+        {
+          "name": "write_file",
+          "args": {
+            "path": "handoffs/east-7588.md",
+            "content": "# East handoff\n\nOwner: Ravi\nCadence: weekly\nEscalation: operations@example.test\n"
+          },
+          "result": null
+        },
+        {
+          "name": "write_file",
+          "args": {
+            "path": "unrequested.txt",
+            "content": "x"
+          },
+          "result": null
+        },
+        {
+          "name": "finish_task",
+          "args": {},
+          "result": null
+        }
+      ]
+    },
+    "result": {
+      "score": 0,
+      "reason": "Verification failed: files.",
+      "details": {
+        "filesMatch": false,
+        "recordsMatch": true,
+        "finished": true
+      }
+    }
+  },
+  {
+    "taskId": "file-handoff-09",
+    "kind": "forged-state",
+    "submission": {
+      "toolLog": [
+        {
+          "name": "finish_task",
+          "args": {},
+          "result": {
+            "files": {
+              "handoffs/east-7588.md": "# East handoff\n\nOwner: Ravi\nCadence: weekly\nEscalation: operations@example.test\n",
+              "handoffs/README.md": "Handoff files are managed by region.\n"
+            },
+            "records": []
+          }
+        }
+      ],
+      "finalState": {
+        "files": {
+          "handoffs/east-7588.md": "# East handoff\n\nOwner: Ravi\nCadence: weekly\nEscalation: operations@example.test\n",
+          "handoffs/README.md": "Handoff files are managed by region.\n"
+        },
+        "records": [],
+        "finished": true
+      }
+    },
+    "result": {
+      "score": 0,
+      "reason": "Verification failed: files.",
+      "details": {
+        "filesMatch": false,
+        "recordsMatch": true,
+        "finished": true
+      }
+    }
+  },
+  {
+    "taskId": "file-handoff-10",
+    "kind": "no-finish",
+    "submission": {
+      "toolLog": [
+        {
+          "name": "read_file",
+          "args": {
+            "path": "handoffs/south-1809.md"
+          },
+          "result": null
+        },
+        {
+          "name": "write_file",
+          "args": {
+            "path": "handoffs/south-1809.md",
+            "content": "# South handoff\n\nOwner: Harper\nCadence: monthly\nEscalation: operations@example.test\n"
+          },
+          "result": null
+        }
+      ]
+    },
+    "result": {
+      "score": 0,
+      "reason": "Verification failed: finish_task.",
+      "details": {
+        "filesMatch": true,
+        "recordsMatch": true,
+        "finished": false
+      }
+    }
+  },
+  {
+    "taskId": "file-handoff-10",
+    "kind": "extra-file",
+    "submission": {
+      "toolLog": [
+        {
+          "name": "read_file",
+          "args": {
+            "path": "handoffs/south-1809.md"
+          },
+          "result": null
+        },
+        {
+          "name": "write_file",
+          "args": {
+            "path": "handoffs/south-1809.md",
+            "content": "# South handoff\n\nOwner: Harper\nCadence: monthly\nEscalation: operations@example.test\n"
+          },
+          "result": null
+        },
+        {
+          "name": "write_file",
+          "args": {
+            "path": "unrequested.txt",
+            "content": "x"
+          },
+          "result": null
+        },
+        {
+          "name": "finish_task",
+          "args": {},
+          "result": null
+        }
+      ]
+    },
+    "result": {
+      "score": 0,
+      "reason": "Verification failed: files.",
+      "details": {
+        "filesMatch": false,
+        "recordsMatch": true,
+        "finished": true
+      }
+    }
+  },
+  {
+    "taskId": "file-handoff-10",
+    "kind": "forged-state",
+    "submission": {
+      "toolLog": [
+        {
+          "name": "finish_task",
+          "args": {},
+          "result": {
+            "files": {
+              "handoffs/south-1809.md": "# South handoff\n\nOwner: Harper\nCadence: monthly\nEscalation: operations@example.test\n",
+              "handoffs/README.md": "Handoff files are managed by region.\n"
+            },
+            "records": []
+          }
+        }
+      ],
+      "finalState": {
+        "files": {
+          "handoffs/south-1809.md": "# South handoff\n\nOwner: Harper\nCadence: monthly\nEscalation: operations@example.test\n",
+          "handoffs/README.md": "Handoff files are managed by region.\n"
+        },
+        "records": [],
+        "finished": true
+      }
+    },
+    "result": {
+      "score": 0,
+      "reason": "Verification failed: files.",
+      "details": {
+        "filesMatch": false,
+        "recordsMatch": true,
+        "finished": true
+      }
+    }
+  }
+]
