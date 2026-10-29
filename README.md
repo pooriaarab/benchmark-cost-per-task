@@ -1,5 +1,7 @@
 # benchmark-cost-per-task
 
+Paper: [10.5281/zenodo.23752393](https://doi.org/10.5281/zenodo.23752393).
+
 [![npm](https://img.shields.io/npm/v/benchmark-cost-per-task)](https://www.npmjs.com/package/benchmark-cost-per-task) [![downloads](https://img.shields.io/npm/dm/benchmark-cost-per-task)](https://www.npmjs.com/package/benchmark-cost-per-task) [![license](https://img.shields.io/npm/l/benchmark-cost-per-task)](./LICENSE) [![types](https://img.shields.io/badge/TypeScript-types-3178c6)](#sdk)
 
 [AI Benchmark Index](https://private-repo-337e.com/benchmarks/benchmark-cost-per-task) · [npm](https://www.npmjs.com/package/benchmark-cost-per-task) · [grading](https://github.com/pooriaarab/benchmark-cost-per-task/blob/main/docs/grading.md) · [metrics](https://github.com/pooriaarab/benchmark-cost-per-task/blob/main/docs/metrics.md) · [llms.txt](https://github.com/pooriaarab/benchmark-cost-per-task/blob/main/llms.txt)
