@@ -1,0 +1,9 @@
+{
+  "status": "passed",
+  "pages": 10,
+  "replayedRows": 6210,
+  "invalidTraces": 90,
+  "repeatPolicies": 7,
+  "simulatedEpisodes": 6000,
+  "pdfSha256": "1670b34bbecd703e73f1a2d928b6fb5a71c8f3eaf366f15a5707bd1a1c69c578"
+}

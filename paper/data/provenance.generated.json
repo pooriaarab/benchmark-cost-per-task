@@ -1,0 +1,13 @@
+{
+  "sourceCommit": "2da12c4c5393d39501652323cf644beff766be0c",
+  "preregCommit": "9c2affa5eb240058f048aefcc7fc891e48519b73",
+  "hashes": {
+    "src/benchmark-definition.ts": "b40bf9af9c082865ffafa26248b4672d0c557217b6727e2d3d8cd1a947ce5fa8",
+    "src/metrics.ts": "33326da364a05e77ca280f78b32affb16d9881a5db93301247c34a52ca70914d",
+    "src/usage-tracker.ts": "7642dcf7fa93e6baa01886c733b33765c1a86afb4ca19b6a8f7c5c5a049dba96",
+    "data/tasks.jsonl": "da0971ecf4f1091c920cf71e6998c5619bc2152da991d11a6aa7c3fc1f6e24d9",
+    "package-lock.json": "9671d889fda4ca3251efacedf00b8c9fefc094ce64c9c7a3cf29e5dd30087a89",
+    "paper/PREREG.md": "057bddc5b68d0b0e09d1b0e9dc1d37ba6300e1d3772b15b1406f65a79bda9729",
+    "paper/scripts/run.mjs": "2d0f40c0ccec4392785b4d2e30d406727ce6aa117b32c03c1b6310f9d8043542"
+  }
+}

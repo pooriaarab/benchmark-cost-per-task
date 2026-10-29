@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "title": "Cost per Verified Task: Replay-Based Evaluation of Back-Office Agents",
+  "abstract": "Cost per attempted task can conceal expensive failures. We study cost per verified success on 30 synthetic back-office tasks, using deterministic replay of file and customer-record operations. A privileged oracle completes every task (95% Wilson interval: 88.6-100.0%); each of six trivial policies completes none (0.0-11.4%). Ninety invalid-trace probes fail verification. A simulated population sweep compares direct execution with a redundant read-only control under a fixed artificial token tariff. The control preserves success and doubles assumed cost per success. These results validate accounting and replay behavior, not learned-agent ability or provider prices. No hosted model or human study is included.",
+  "authors": [
+    {
+      "name": "Pooria Arab",
+      "affiliation": "Independent researcher",
+      "orcid": "https://orcid.org/0009-0005-9964-6841"
+    }
+  ],
+  "license": "CC-BY-4.0",
+  "keywords": [
+    "agent evaluation",
+    "cost per task",
+    "deterministic replay",
+    "simulated population",
+    "back-office tasks"
+  ],
+  "code_url": "https://github.com/pooriaarab/benchmark-cost-per-task",
+  "artifact_name": "cost-per-task-paper.pdf"
+}
